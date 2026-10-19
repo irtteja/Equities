@@ -102,6 +102,28 @@ def save(out_file: str, data: dict) -> None:
     os.replace(tmp, out_file)
 
 
+def export_csv(data: dict) -> None:
+    # indices.csv
+    with open("indices.csv", "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=data["indices"][0].keys())
+        writer.writeheader()
+        writer.writerows(data["indices"])
+
+    # constituents.csv — flattened with index column
+    rows = [
+        {"index": index_name, **stock}
+        for index_name, stocks in data["constituents"].items()
+        for stock in stocks
+    ]
+    with open("constituents.csv", "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+
+    print(f"  indices.csv: {len(data['indices'])} rows")
+    print(f"  constituents.csv: {len(rows)} rows")
+
+
 def main() -> None:
     out_file = "nse_data.json"
 
@@ -156,6 +178,11 @@ def main() -> None:
     total_stocks = sum(len(v) for v in constituents.values())
     print(f"\nSaved to {out_file}")
     print(f"  {len(indices)} indices, {len(constituents)}/{len(CONSTITUENT_CSV)} constituent lists, {total_stocks} stock records")
+
+    if not pending:
+        print("Exporting CSVs...")
+        export_csv(data)
+
     if pending:
         print(f"  Still pending: {', '.join(pending)}", file=sys.stderr)
         sys.exit(1)  # signal to caller that work remains
