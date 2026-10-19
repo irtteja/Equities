@@ -3,6 +3,7 @@
 import csv
 import io
 import json
+import re
 import sys
 import time
 from datetime import datetime
@@ -20,38 +21,57 @@ NSE_HEADERS = {
 }
 
 CONSTITUENT_CSV = {
-    "NIFTY 50":                "ind_nifty50list.csv",
-    "NIFTY NEXT 50":           "ind_niftynext50list.csv",
-    "NIFTY 100":               "ind_nifty100list.csv",
-    "NIFTY 200":               "ind_nifty200list.csv",
-    "NIFTY 500":               "ind_nifty500list.csv",
-    "NIFTY BANK":              "ind_niftybanklist.csv",
-    "NIFTY IT":                "ind_niftyitlist.csv",
-    "NIFTY AUTO":              "ind_niftyautolist.csv",
-    "NIFTY PHARMA":            "ind_niftypharmalist.csv",
-    "NIFTY FMCG":              "ind_niftyfmcglist.csv",
-    "NIFTY METAL":             "ind_niftymetallist.csv",
-    "NIFTY REALTY":            "ind_niftyrealtylist.csv",
-    "NIFTY MIDCAP 50":         "ind_niftymidcap50list.csv",
-    "NIFTY MIDCAP 100":        "ind_niftymidcap100list.csv",
-    "NIFTY MIDCAP 150":        "ind_niftymidcap150list.csv",
-    "NIFTY SMALLCAP 50":       "ind_niftysmallcap50list.csv",
-    "NIFTY SMALLCAP 100":      "ind_niftysmallcap100list.csv",
-    "NIFTY SMALLCAP 250":      "ind_niftysmallcap250list.csv",
-    "NIFTY LARGEMIDCAP 250":   "ind_niftylargemidcap250list.csv",
-    "NIFTY MIDSMALLCAP 400":   "ind_niftymidsmallcap400list.csv",
-    "NIFTY HEALTHCARE INDEX":  "ind_niftyhealthcarelist.csv",
-    "NIFTY INFRASTRUCTURE":    "ind_niftyinfralist.csv",
-    "NIFTY ENERGY":            "ind_niftyenergylist.csv",
-    "NIFTY MEDIA":             "ind_niftymedialist.csv",
-    "NIFTY MNC":               "ind_niftymnclist.csv",
-    "NIFTY PSU BANK":          "ind_niftypsubanklist.csv",
-    "NIFTY CPSE":              "ind_niftycpselist.csv",
-    "NIFTY PSE":               "ind_niftypselist.csv",
-    "NIFTY COMMODITIES":       "ind_niftycommoditieslist.csv",
-    "NIFTY INDIA CONSUMPTION": "ind_niftyconsumptionlist.csv",
-    "NIFTY CONSUMER DURABLES": "ind_niftyconsumerdurableslist.csv",
-    "NIFTY MICROCAP 250":      "ind_niftymicrocap250_list.csv",
+    # ── Broad market ──────────────────────────────────────────────────────────
+    "NIFTY 50":                         "ind_nifty50list.csv",
+    "NIFTY NEXT 50":                    "ind_niftynext50list.csv",
+    "NIFTY 100":                        "ind_nifty100list.csv",
+    "NIFTY 200":                        "ind_nifty200list.csv",
+    "NIFTY 500":                        "ind_nifty500list.csv",
+    "NIFTY MIDCAP 50":                  "ind_niftymidcap50list.csv",
+    "NIFTY MIDCAP 100":                 "ind_niftymidcap100list.csv",
+    "NIFTY MIDCAP 150":                 "ind_niftymidcap150list.csv",
+    "NIFTY MIDCAP SELECT":              "ind_niftymidcapselect_list.csv",
+    "NIFTY SMALLCAP 50":                "ind_niftysmallcap50list.csv",
+    "NIFTY SMALLCAP 100":               "ind_niftysmallcap100list.csv",
+    "NIFTY SMALLCAP 250":               "ind_niftysmallcap250list.csv",
+    "NIFTY LARGEMIDCAP 250":            "ind_niftylargemidcap250list.csv",
+    "NIFTY MIDSMALLCAP 400":            "ind_niftymidsmallcap400list.csv",
+    "NIFTY MICROCAP 250":               "ind_niftymicrocap250_list.csv",
+    "NIFTY TOTAL MARKET":               "ind_niftytotalmarket_list.csv",
+    # ── Sectoral ──────────────────────────────────────────────────────────────
+    "NIFTY BANK":                       "ind_niftybanklist.csv",
+    "NIFTY IT":                         "ind_niftyitlist.csv",
+    "NIFTY AUTO":                       "ind_niftyautolist.csv",
+    "NIFTY PHARMA":                     "ind_niftypharmalist.csv",
+    "NIFTY FMCG":                       "ind_niftyfmcglist.csv",
+    "NIFTY METAL":                      "ind_niftymetallist.csv",
+    "NIFTY REALTY":                     "ind_niftyrealtylist.csv",
+    "NIFTY HEALTHCARE INDEX":           "ind_niftyhealthcarelist.csv",
+    "NIFTY INFRASTRUCTURE":             "ind_niftyinfralist.csv",
+    "NIFTY ENERGY":                     "ind_niftyenergylist.csv",
+    "NIFTY MEDIA":                      "ind_niftymedialist.csv",
+    "NIFTY PSU BANK":                   "ind_niftypsubanklist.csv",
+    "NIFTY CPSE":                       "ind_niftycpselist.csv",
+    "NIFTY PSE":                        "ind_niftypselist.csv",
+    "NIFTY OIL & GAS":                  "ind_niftyoilgaslist.csv",
+    "NIFTY CHEMICALS":                  "ind_niftyChemicals_list.csv",
+    "NIFTY MIDSMALL HEALTHCARE":        "ind_niftymidsmallhealthcare_list.csv",
+    "NIFTY FINANCIAL SERVICES EX-BANK": "ind_niftyfinancialservicesexbank_list.csv",
+    "NIFTY REITS & REALTY":             "ind_niftyREITsRealty_list.csv",
+    # ── Thematic ──────────────────────────────────────────────────────────────
+    "NIFTY MNC":                        "ind_niftymnclist.csv",
+    "NIFTY COMMODITIES":                "ind_niftycommoditieslist.csv",
+    "NIFTY INDIA CONSUMPTION":          "ind_niftyconsumptionlist.csv",
+    "NIFTY CONSUMER DURABLES":          "ind_niftyconsumerdurableslist.csv",
+    "NIFTY INDIA MANUFACTURING":        "ind_niftyindiamanufacturing_list.csv",
+    "NIFTY INDIA DEFENCE":              "ind_niftyindiadefence_list.csv",
+    "NIFTY INDIA TOURISM":              "ind_niftyindiatourism_list.csv",
+    "NIFTY INDIA DIGITAL":              "ind_niftyindiadigital_list.csv",
+    "NIFTY MOBILITY":                   "ind_niftymobility_list.csv",
+    "NIFTY CORE HOUSING":               "ind_niftycorehousing_list.csv",
+    "NIFTY CAPITAL MARKETS":            "ind_niftyCapitalMarkets_list.csv",
+    "NIFTY TRANSPORTATION & LOGISTICS": "ind_niftytransportationandlogistics_list.csv",
+    "NIFTY MIDSMALL INDIA CONSUMPTION": "ind_niftymidsmallindiaconsumption_list.csv",
 }
 
 
@@ -68,6 +88,59 @@ def nse_session() -> requests.Session:
 
 
 EXCLUDED_CATEGORIES = {"STRATEGY INDICES", "FIXED INCOME INDICES"}
+
+_ARCHIVE_BASE = "https://nsearchives.nseindia.com/content/indices/"
+
+
+def _probe_csv_candidates(index_name: str) -> list[str]:
+    """Generate candidate CSV filenames for an NSE index name."""
+    n = index_name.upper().strip()
+    for sfx in (" INDEX", " INDICES"):
+        if n.endswith(sfx):
+            n = n[: -len(sfx)].strip()
+    key_pure = re.sub(r"^NIFTY\d*\s+", "", n)
+    key_with = re.sub(r"^NIFTY\s*", "", n)
+
+    def _slug(s: str) -> str:
+        return re.sub(r"[^A-Z0-9]", "", s.upper()).lower()
+
+    cands: list[str] = []
+    seen: set[str] = set()
+    for k in (key_pure, key_with, key_pure.replace("INDIA", ""), key_with.replace("INDIA", "")):
+        s = _slug(k)
+        for tmpl in (f"ind_nifty{s}list.csv", f"ind_nifty{s}_list.csv"):
+            if tmpl not in seen:
+                cands.append(tmpl)
+                seen.add(tmpl)
+
+    words = [w for w in re.split(r"[^A-Z0-9]+", key_pure.upper()) if w]
+    camel = "".join(w.capitalize() for w in words)
+    if camel:
+        for tmpl in (
+            f"ind_Nifty{camel}_list.csv",
+            f"ind_nifty{camel.lower()}_list.csv",
+            f"ind_nifty{camel.lower()}list.csv",
+            f"ind_Nifty{camel}list.csv",
+        ):
+            if tmpl not in seen:
+                cands.append(tmpl)
+                seen.add(tmpl)
+    return cands
+
+
+def probe_constituent_csv(
+    index_name: str, session: requests.Session | None = None
+) -> str | None:
+    """Probe nsearchives for the CSV filename of an unknown index. Returns None if not found."""
+    requester = session or requests
+    for candidate in _probe_csv_candidates(index_name):
+        try:
+            r = requester.head(_ARCHIVE_BASE + candidate, timeout=6)
+            if r.status_code == 200:
+                return candidate
+        except Exception:
+            pass
+    return None
 
 
 def fetch_indices(session: requests.Session) -> list[dict]:
@@ -138,6 +211,33 @@ def export_csv(data: dict) -> None:
     print(f"  index_membership.csv: {total_memberships} rows")
 
 
+def _build_constituent_map(indices: list[dict], session: requests.Session) -> dict[str, str]:
+    """
+    Return {index_name: csv_filename} for all non-excluded indices.
+    Known mappings come from CONSTITUENT_CSV; unknown indices are probed via HEAD requests.
+    """
+    result: dict[str, str] = {}
+    unknown = []
+    for d in indices:
+        name = d["index"]
+        if name in CONSTITUENT_CSV:
+            result[name] = CONSTITUENT_CSV[name]
+        else:
+            unknown.append(name)
+
+    if unknown:
+        print(f"  Probing {len(unknown)} unknown indices on nsearchives...", file=sys.stderr)
+        for name in unknown:
+            csv_file = probe_constituent_csv(name, session)
+            if csv_file:
+                result[name] = csv_file
+                print(f"    discovered: {name} → {csv_file}", file=sys.stderr)
+            else:
+                print(f"    no CSV: {name}", file=sys.stderr)
+
+    return result
+
+
 def main() -> None:
     out_file = "nse_data.json"
 
@@ -147,38 +247,62 @@ def main() -> None:
             data = json.load(f)
         constituents: dict[str, list] = data.get("constituents", {})
         indices: list[dict] = data.get("indices", [])
-        pending: list[str] = data.get("pending", list(CONSTITUENT_CSV.keys()))
+        constituent_map: dict[str, str] = data.get("constituent_map", {})
+        pending: list[str] = data.get("pending", [])
         pending = [p for p in pending if p not in constituents]
         print(f"Resuming: {len(constituents)} done, {len(pending)} pending")
     except FileNotFoundError:
         constituents = {}
         indices = []
-        pending = list(CONSTITUENT_CSV.keys())
+        constituent_map = {}
+        pending = []
         data = {}
 
+    print("Connecting to NSE India...")
+    session = nse_session()
+
     if not indices:
-        print("Connecting to NSE India...")
-        session = nse_session()
         print("Fetching indices...")
         indices = fetch_indices(session)
         print(f"  {len(indices)} indices fetched")
-        data = {
-            "fetched_at": datetime.now().isoformat(),
-            "indices": indices,
-            "constituents": constituents,
-            "pending": pending,
-        }
-        save(out_file, data)
+
+    if not constituent_map:
+        print("Building constituent map...")
+        constituent_map = _build_constituent_map(indices, session)
+        print(f"  {len(constituent_map)} indices with constituent CSV")
+
+    # Discover any new indices that appeared since the last run
+    new_indices = [
+        d for d in indices
+        if d["index"] not in constituent_map and d["index"] not in constituents
+    ]
+    if new_indices:
+        print(f"  Probing {len(new_indices)} new indices...")
+        new_map = _build_constituent_map(new_indices, session)
+        constituent_map.update(new_map)
+
+    if not pending:
+        # First run or after new indices are discovered: queue all uncompleted
+        pending = [name for name in constituent_map if name not in constituents]
+
+    data = {
+        "fetched_at": data.get("fetched_at") or datetime.now().isoformat(),
+        "indices": indices,
+        "constituent_map": constituent_map,
+        "constituents": constituents,
+        "pending": pending,
+        "stocks": data.get("stocks", {}),
+    }
+    save(out_file, data)
 
     print(f"Fetching {len(pending)} constituent lists...")
 
     stocks_master: dict[str, dict] = data.get("stocks", {})
 
     for index_name in list(pending):
-        filename = CONSTITUENT_CSV[index_name]
+        filename = constituent_map[index_name]
         try:
             rows = fetch_constituents(filename)
-            # store unique stocks in master dict, constituents as symbol list
             symbols = []
             for row in rows:
                 sym = row.get("Symbol", "").strip()
@@ -196,7 +320,7 @@ def main() -> None:
             data["stocks"] = stocks_master
             data["constituents"] = constituents
             data["pending"] = pending
-            save(out_file, data)  # checkpoint: persist success + updated pending
+            save(out_file, data)
             print(f"  {index_name}: {len(symbols)} stocks")
         except Exception as e:
             print(f"  {index_name}: FAILED — {e}", file=sys.stderr)
@@ -206,7 +330,7 @@ def main() -> None:
 
     total_stocks = sum(len(v) for v in constituents.values())
     print(f"\nSaved to {out_file}")
-    print(f"  {len(indices)} indices, {len(constituents)}/{len(CONSTITUENT_CSV)} constituent lists, {total_stocks} stock records")
+    print(f"  {len(indices)} indices, {len(constituents)}/{len(constituent_map)} constituent lists, {total_stocks} stock records")
 
     if not pending:
         print("Exporting CSVs...")
@@ -214,7 +338,7 @@ def main() -> None:
 
     if pending:
         print(f"  Still pending: {', '.join(pending)}", file=sys.stderr)
-        sys.exit(1)  # signal to caller that work remains
+        sys.exit(1)
 
 
 if __name__ == "__main__":
