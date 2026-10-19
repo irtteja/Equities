@@ -6,6 +6,7 @@ import json
 import os
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone, timedelta
 import anthropic
 import requests
@@ -217,6 +218,10 @@ def fetch_indices(session: requests.Session) -> list[dict]:
     ]
 
 
+class NotFoundError(Exception):
+    pass
+
+
 def fetch_constituents(filename: str, retries: int = 4) -> list[dict]:
     url = f"https://nsearchives.nseindia.com/content/indices/{filename}"
     delay = 2
@@ -228,8 +233,12 @@ def fetch_constituents(filename: str, retries: int = 4) -> list[dict]:
                 headers={"User-Agent": NSE_HEADERS["User-Agent"]},
                 timeout=15 + attempt * 15,  # 15s, 30s, 45s, 60s
             )
+            if resp.status_code == 404:
+                raise NotFoundError(f"404 Not Found: {url}")
             resp.raise_for_status()
             return list(csv.DictReader(io.StringIO(resp.text)))
+        except NotFoundError:
+            raise  # never retry a 404
         except Exception as e:
             last_exc = e
             if attempt < retries - 1:
@@ -316,9 +325,32 @@ def _build_constituent_map(indices: list[dict], session: requests.Session) -> di
             print(f"    discovered: {name} → {filename}", file=sys.stderr)
         for name in unknown:
             if name not in discovered:
-                print(f"    no CSV: {name}", file=sys.stderr)
+                print(f"    no CSV: {name} (marked, will skip)", file=sys.stderr)
+                result[name] = None  # sentinel: confirmed no constituent CSV
 
     return result
+
+
+def _fetch_one(index_name: str, filename: str, old_symbols: list[str]):
+    """Fetch and parse one index CSV. Returns (index_name, new_symbols, stock_details, error)."""
+    try:
+        rows = fetch_constituents(filename)
+        new_symbols: list[str] = []
+        stock_details: dict[str, dict] = {}
+        for row in rows:
+            sym = row.get("Symbol", "").strip()
+            if sym:
+                stock_details[sym] = {
+                    "Symbol":       sym,
+                    "Company Name": row.get("Company Name", "").strip(),
+                    "Industry":     row.get("Industry", "").strip(),
+                    "Series":       row.get("Series", "").strip(),
+                    "ISIN Code":    row.get("ISIN Code", "").strip(),
+                }
+                new_symbols.append(sym)
+        return index_name, new_symbols, stock_details, None
+    except Exception as e:
+        return index_name, [], {}, e
 
 
 def main() -> None:
@@ -348,7 +380,7 @@ def main() -> None:
     indices = fetch_indices(session)
     print(f"  {len(indices)} indices fetched")
 
-    # Update constituent map — discover any brand-new indices
+    # Update constituent map — discover any brand-new indices (not yet in map at all)
     new_index_names = [d["index"] for d in indices if d["index"] not in constituent_map]
     if new_index_names:
         print(f"  Building constituent map ({len(new_index_names)} new)...")
@@ -366,9 +398,9 @@ def main() -> None:
         constituent_map.pop(removed, None)
         constituents.pop(removed, None)
 
-    # First run of this refresh: queue all indices
+    # First run of this refresh: queue all indices that have a real filename
     if refresh_pending is None:
-        refresh_pending = list(constituent_map.keys())
+        refresh_pending = [k for k, v in constituent_map.items() if v]
 
     data = {
         "fetched_at": _now_ist(),
@@ -381,50 +413,51 @@ def main() -> None:
     }
     save(out_file, data)
 
-    print(f"Refreshing {len(refresh_pending)} constituent lists...")
+    total = len(refresh_pending)
+    print(f"Refreshing {total} constituent lists (10 parallel workers)...")
 
-    for index_name in list(refresh_pending):
-        filename = constituent_map[index_name]
-        try:
-            rows = fetch_constituents(filename)
-            new_symbols: list[str] = []
-            for row in rows:
-                sym = row.get("Symbol", "").strip()
-                if sym:
-                    stocks_master[sym] = {
-                        "Symbol":       sym,
-                        "Company Name": row.get("Company Name", "").strip(),
-                        "Industry":     row.get("Industry", "").strip(),
-                        "Series":       row.get("Series", "").strip(),
-                        "ISIN Code":    row.get("ISIN Code", "").strip(),
-                    }
-                    new_symbols.append(sym)
+    with ThreadPoolExecutor(max_workers=10) as pool:
+        futures = {
+            pool.submit(_fetch_one, name, constituent_map[name], constituents.get(name, [])): name
+            for name in list(refresh_pending)
+            if constituent_map.get(name)  # skip None sentinels
+        }
+        done = 0
+        for future in as_completed(futures):
+            index_name, new_symbols, stock_details, err = future.result()
+            done += 1
+            if err:
+                print(f"  [{done}/{total}] {index_name}: FAILED — {err}", file=sys.stderr)
+                if isinstance(err, NotFoundError):
+                    constituent_map[index_name] = None  # sentinel: bad filename, don't retry
+                    refresh_pending.remove(index_name)
+                    data.update({"constituent_map": constituent_map, "refresh_pending": refresh_pending})
+                    save(out_file, data)
+                continue
 
-            # Diff against stored constituent list
+            # All shared-state mutations happen here in the main thread — no locks needed
             old_set = set(constituents.get(index_name, []))
             new_set = set(new_symbols)
             ts = _now_ist()
             for sym in new_set - old_set:
                 changes.append({"timestamp": ts, "type": "stock_added",
                                  "index": index_name, "symbol": sym,
-                                 "company": stocks_master.get(sym, {}).get("Company Name", "")})
+                                 "company": stock_details.get(sym, {}).get("Company Name", "")})
             for sym in old_set - new_set:
                 changes.append({"timestamp": ts, "type": "stock_removed",
                                  "index": index_name, "symbol": sym,
                                  "company": stocks_master.get(sym, {}).get("Company Name", "")})
             if new_set != old_set:
-                print(f"  {index_name}: +{len(new_set-old_set)} -{len(old_set-new_set)}")
+                print(f"  [{done}/{total}] {index_name}: +{len(new_set-old_set)} -{len(old_set-new_set)}")
             else:
-                print(f"  {index_name}: {len(new_symbols)} stocks (no change)")
+                print(f"  [{done}/{total}] {index_name}: {len(new_symbols)} stocks (no change)")
 
+            stocks_master.update(stock_details)
             constituents[index_name] = new_symbols
             refresh_pending.remove(index_name)
             data.update({"constituents": constituents, "refresh_pending": refresh_pending,
                          "stocks": stocks_master, "changes": changes})
             save(out_file, data)
-
-        except Exception as e:
-            print(f"  {index_name}: FAILED — {e}", file=sys.stderr)
 
     # Detect orphaned stocks (no longer in any index)
     all_symbols = {sym for syms in constituents.values() for sym in syms}
