@@ -1,11 +1,48 @@
 """NSE India indices agent — Claude reasons over live NSE data."""
 
+import csv
+import io
 import json
 import sys
 import requests
 import anthropic
 
 MODEL = "claude-opus-5-5"
+
+# ── NSE archive: index symbol → CSV filename ───────────────────────────────
+CONSTITUENT_CSV = {
+    "NIFTY 50":                "ind_nifty50list.csv",
+    "NIFTY NEXT 50":           "ind_niftynext50list.csv",
+    "NIFTY 100":               "ind_nifty100list.csv",
+    "NIFTY 200":               "ind_nifty200list.csv",
+    "NIFTY 500":               "ind_nifty500list.csv",
+    "NIFTY BANK":              "ind_niftybanklist.csv",
+    "NIFTY IT":                "ind_niftyitlist.csv",
+    "NIFTY AUTO":              "ind_niftyautolist.csv",
+    "NIFTY PHARMA":            "ind_niftypharmalist.csv",
+    "NIFTY FMCG":              "ind_niftyfmcglist.csv",
+    "NIFTY METAL":             "ind_niftymetallist.csv",
+    "NIFTY REALTY":            "ind_niftyrealtylist.csv",
+    "NIFTY MIDCAP 50":         "ind_niftymidcap50list.csv",
+    "NIFTY MIDCAP 100":        "ind_niftymidcap100list.csv",
+    "NIFTY MIDCAP 150":        "ind_niftymidcap150list.csv",
+    "NIFTY SMALLCAP 50":       "ind_niftysmallcap50list.csv",
+    "NIFTY SMALLCAP 100":      "ind_niftysmallcap100list.csv",
+    "NIFTY SMALLCAP 250":      "ind_niftysmallcap250list.csv",
+    "NIFTY LARGEMIDCAP 250":   "ind_niftylargemidcap250list.csv",
+    "NIFTY MIDSMALLCAP 400":   "ind_niftymidsmallcap400list.csv",
+    "NIFTY HEALTHCARE INDEX":  "ind_niftyhealthcarelist.csv",
+    "NIFTY INFRASTRUCTURE":    "ind_niftyinfralist.csv",
+    "NIFTY ENERGY":            "ind_niftyenergylist.csv",
+    "NIFTY MEDIA":             "ind_niftymedialist.csv",
+    "NIFTY MNC":               "ind_niftymnclist.csv",
+    "NIFTY PSU BANK":          "ind_niftypsubanklist.csv",
+    "NIFTY CPSE":              "ind_niftycpselist.csv",
+    "NIFTY PSE":               "ind_niftypselist.csv",
+    "NIFTY COMMODITIES":       "ind_niftycommoditieslist.csv",
+    "NIFTY INDIA CONSUMPTION": "ind_niftyconsumptionlist.csv",
+    "NIFTY CONSUMER DURABLES": "ind_niftyconsumerdurableslist.csv",
+}
 
 NSE_HEADERS = {
     "User-Agent": (
@@ -44,15 +81,39 @@ TOOLS = [
             },
             "required": [],
         },
-    }
+    },
+    {
+        "name": "fetch_index_constituents",
+        "description": (
+            "Fetch the constituent stocks of a specific NSE index. "
+            "Returns each stock's company name, industry/sector, NSE symbol, "
+            "series, and ISIN code. "
+            f"Supported indices: {', '.join(sorted(CONSTITUENT_CSV.keys()))}."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "index": {
+                    "type": "string",
+                    "description": (
+                        "The index name exactly as listed in the description, "
+                        "e.g. 'NIFTY 50', 'NIFTY BANK', 'NIFTY IT'."
+                    ),
+                }
+            },
+            "required": ["index"],
+        },
+    },
 ]
 
+
+# ── helpers ────────────────────────────────────────────────────────────────
 
 def _nse_session() -> requests.Session:
     s = requests.Session()
     s.headers.update({
         "User-Agent": NSE_HEADERS["User-Agent"],
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept": "text/html,application/xhtml+xml",
         "Accept-Language": "en-US,en;q=0.9",
     })
     s.get("https://www.nseindia.com/", timeout=15)
@@ -75,15 +136,40 @@ def fetch_nse_indices(category: str | None = None) -> list[dict]:
     return [{f: d[f] for f in fields if f in d} for d in data]
 
 
+def fetch_index_constituents(index: str) -> list[dict] | dict:
+    filename = CONSTITUENT_CSV.get(index.upper()) or CONSTITUENT_CSV.get(index)
+    if not filename:
+        # fuzzy match
+        key = next(
+            (k for k in CONSTITUENT_CSV if index.upper() in k or k in index.upper()),
+            None,
+        )
+        if not key:
+            return {
+                "error": f"No constituent data for '{index}'.",
+                "supported": sorted(CONSTITUENT_CSV.keys()),
+            }
+        filename = CONSTITUENT_CSV[key]
+
+    url = f"https://nsearchives.nseindia.com/content/indices/{filename}"
+    resp = requests.get(url, headers={"User-Agent": NSE_HEADERS["User-Agent"]}, timeout=15)
+    resp.raise_for_status()
+    reader = csv.DictReader(io.StringIO(resp.text))
+    return [dict(row) for row in reader]
+
+
 def run_tool(name: str, tool_input: dict) -> str:
     if name == "fetch_nse_indices":
         return json.dumps(fetch_nse_indices(tool_input.get("category")))
+    if name == "fetch_index_constituents":
+        return json.dumps(fetch_index_constituents(tool_input["index"]))
     return json.dumps({"error": f"Unknown tool: {name}"})
 
 
+# ── agent loop ─────────────────────────────────────────────────────────────
+
 def ask(question: str) -> str:
-    """Send a question to the NSE agent; returns Claude's final answer."""
-    # Zero-arg client — resolves credentials from the session automatically
+    """Run the agentic loop and return Claude's final answer."""
     client = anthropic.Anthropic()
     messages = [{"role": "user", "content": question}]
 
@@ -92,10 +178,11 @@ def ask(question: str) -> str:
             model=MODEL,
             max_tokens=4096,
             system=(
-                "You are a financial data agent for NSE India. "
-                "Use fetch_nse_indices whenever you need live index data. "
+                "You are a financial data agent for NSE India (National Stock Exchange). "
+                "Use fetch_nse_indices to get live index prices and market-wide data. "
+                "Use fetch_index_constituents to get the stocks inside a specific index. "
                 "Present numbers clearly: commas for thousands, two decimal places, "
-                "+ sign for positive changes. Group by category when listing many."
+                "+ sign for positive changes. Group by category when listing many indices."
             ),
             tools=TOOLS,
             messages=messages,
