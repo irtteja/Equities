@@ -3,11 +3,17 @@
 import csv
 import io
 import json
+import os
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import anthropic
 import requests
+
+IST = timezone(timedelta(hours=5, minutes=30))
+
+def _now_ist() -> str:
+    return datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S IST")
 
 NSE_HEADERS = {
     "User-Agent": (
@@ -268,8 +274,24 @@ def export_csv(data: dict) -> None:
                 "Indices": " | ".join(symbol_to_indices.get(sym, [])),
             })
 
+    # changes.csv — full history of all detected changes
+    changes = data.get("changes", [])
+    with open("changes.csv", "w", newline="") as f:
+        fieldnames = ["Timestamp (IST)", "Type", "Index", "Symbol", "Company Name"]
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for c in changes:
+            writer.writerow({
+                "Timestamp (IST)": c.get("timestamp", ""),
+                "Type":            c.get("type", ""),
+                "Index":           c.get("index", ""),
+                "Symbol":          c.get("symbol", ""),
+                "Company Name":    c.get("company", ""),
+            })
+
     print(f"  indices.csv: {len(data['indices'])} rows")
     print(f"  stocks.csv: {len(stocks)} stocks with index membership")
+    print(f"  changes.csv: {len(changes)} change records")
 
 
 def _build_constituent_map(indices: list[dict], session: requests.Session) -> dict[str, str]:
@@ -302,104 +324,136 @@ def _build_constituent_map(indices: list[dict], session: requests.Session) -> di
 def main() -> None:
     out_file = "nse_data.json"
 
-    # Resume from existing checkpoint if present
+    # Load checkpoint
     try:
         with open(out_file) as f:
             data = json.load(f)
-        constituents: dict[str, list] = data.get("constituents", {})
-        indices: list[dict] = data.get("indices", [])
+        constituents: dict[str, list]  = data.get("constituents", {})
         constituent_map: dict[str, str] = data.get("constituent_map", {})
-        pending: list[str] = data.get("pending", [])
-        pending = [p for p in pending if p not in constituents]
-        print(f"Resuming: {len(constituents)} done, {len(pending)} pending")
+        stocks_master: dict[str, dict]  = data.get("stocks", {})
+        changes: list[dict]             = data.get("changes", [])
+        # refresh_pending: indices left to re-fetch in the current run
+        # if present, we're resuming a partial run; otherwise start fresh
+        refresh_pending: list[str] | None = data.get("refresh_pending")
+        print(f"Loaded checkpoint: {len(constituents)} indices, {len(stocks_master)} stocks")
     except FileNotFoundError:
-        constituents = {}
-        indices = []
-        constituent_map = {}
-        pending = []
+        constituents, constituent_map, stocks_master, changes = {}, {}, {}, []
+        refresh_pending = None
         data = {}
 
     print("Connecting to NSE India...")
     session = nse_session()
 
-    if not indices:
-        print("Fetching indices...")
-        indices = fetch_indices(session)
-        print(f"  {len(indices)} indices fetched")
+    print("Fetching indices...")
+    indices = fetch_indices(session)
+    print(f"  {len(indices)} indices fetched")
 
-    map_from_checkpoint = bool(constituent_map)
+    # Update constituent map — discover any brand-new indices
+    new_index_names = [d["index"] for d in indices if d["index"] not in constituent_map]
+    if new_index_names:
+        print(f"  Building constituent map ({len(new_index_names)} new)...")
+        constituent_map.update(_build_constituent_map(
+            [d for d in indices if d["index"] in new_index_names], session
+        ))
 
-    if not constituent_map:
-        print("Building constituent map...")
-        constituent_map = _build_constituent_map(indices, session)
-        print(f"  {len(constituent_map)} indices with constituent CSV")
-    elif map_from_checkpoint:
-        # On subsequent runs, check for brand-new indices the map hasn't seen yet
-        new_indices = [
-            d for d in indices
-            if d["index"] not in constituent_map and d["index"] not in constituents
-        ]
-        if new_indices:
-            print(f"  Discovering {len(new_indices)} new indices...")
-            constituent_map.update(_build_constituent_map(new_indices, session))
+    # Detect indices removed from NSE entirely
+    current_names = {d["index"] for d in indices}
+    ts = _now_ist()
+    for removed in set(constituent_map) - current_names:
+        print(f"  Index removed from NSE: {removed}")
+        changes.append({"timestamp": ts, "type": "index_removed", "index": removed,
+                        "symbol": "", "company": ""})
+        constituent_map.pop(removed, None)
+        constituents.pop(removed, None)
 
-    if not pending:
-        # First run or after new indices are discovered: queue all uncompleted
-        pending = [name for name in constituent_map if name not in constituents]
+    # First run of this refresh: queue all indices
+    if refresh_pending is None:
+        refresh_pending = list(constituent_map.keys())
 
     data = {
-        "fetched_at": data.get("fetched_at") or datetime.now().isoformat(),
+        "fetched_at": _now_ist(),
         "indices": indices,
         "constituent_map": constituent_map,
         "constituents": constituents,
-        "pending": pending,
-        "stocks": data.get("stocks", {}),
+        "refresh_pending": refresh_pending,
+        "stocks": stocks_master,
+        "changes": changes,
     }
     save(out_file, data)
 
-    print(f"Fetching {len(pending)} constituent lists...")
+    print(f"Refreshing {len(refresh_pending)} constituent lists...")
 
-    stocks_master: dict[str, dict] = data.get("stocks", {})
-
-    for index_name in list(pending):
+    for index_name in list(refresh_pending):
         filename = constituent_map[index_name]
         try:
             rows = fetch_constituents(filename)
-            symbols = []
+            new_symbols: list[str] = []
             for row in rows:
                 sym = row.get("Symbol", "").strip()
                 if sym:
                     stocks_master[sym] = {
-                        "Symbol": sym,
+                        "Symbol":       sym,
                         "Company Name": row.get("Company Name", "").strip(),
-                        "Industry": row.get("Industry", "").strip(),
-                        "Series": row.get("Series", "").strip(),
-                        "ISIN Code": row.get("ISIN Code", "").strip(),
+                        "Industry":     row.get("Industry", "").strip(),
+                        "Series":       row.get("Series", "").strip(),
+                        "ISIN Code":    row.get("ISIN Code", "").strip(),
                     }
-                    symbols.append(sym)
-            constituents[index_name] = symbols
-            pending.remove(index_name)
-            data["stocks"] = stocks_master
-            data["constituents"] = constituents
-            data["pending"] = pending
+                    new_symbols.append(sym)
+
+            # Diff against stored constituent list
+            old_set = set(constituents.get(index_name, []))
+            new_set = set(new_symbols)
+            ts = _now_ist()
+            for sym in new_set - old_set:
+                changes.append({"timestamp": ts, "type": "stock_added",
+                                 "index": index_name, "symbol": sym,
+                                 "company": stocks_master.get(sym, {}).get("Company Name", "")})
+            for sym in old_set - new_set:
+                changes.append({"timestamp": ts, "type": "stock_removed",
+                                 "index": index_name, "symbol": sym,
+                                 "company": stocks_master.get(sym, {}).get("Company Name", "")})
+            if new_set != old_set:
+                print(f"  {index_name}: +{len(new_set-old_set)} -{len(old_set-new_set)}")
+            else:
+                print(f"  {index_name}: {len(new_symbols)} stocks (no change)")
+
+            constituents[index_name] = new_symbols
+            refresh_pending.remove(index_name)
+            data.update({"constituents": constituents, "refresh_pending": refresh_pending,
+                         "stocks": stocks_master, "changes": changes})
             save(out_file, data)
-            print(f"  {index_name}: {len(symbols)} stocks")
+
         except Exception as e:
             print(f"  {index_name}: FAILED — {e}", file=sys.stderr)
 
-    data["pending"] = pending
+    # Detect orphaned stocks (no longer in any index)
+    all_symbols = {sym for syms in constituents.values() for sym in syms}
+    ts = _now_ist()
+    for sym in list(stocks_master):
+        if sym not in all_symbols:
+            changes.append({"timestamp": ts, "type": "stock_orphaned",
+                             "index": "", "symbol": sym,
+                             "company": stocks_master[sym].get("Company Name", "")})
+            print(f"  Orphaned stock removed: {sym}")
+            del stocks_master[sym]
+
+    data.update({"stocks": stocks_master, "changes": changes})
+
+    # Clear refresh_pending only when fully complete
+    if not refresh_pending:
+        data["refresh_pending"] = None
+
     save(out_file, data)
 
-    total_stocks = sum(len(v) for v in constituents.values())
     print(f"\nSaved to {out_file}")
-    print(f"  {len(indices)} indices, {len(constituents)}/{len(constituent_map)} constituent lists, {total_stocks} stock records")
+    print(f"  {len(indices)} indices, {len(constituents)} constituent lists, "
+          f"{len(stocks_master)} unique stocks, {len(changes)} change records")
 
-    if not pending:
-        print("Exporting CSVs...")
-        export_csv(data)
+    print("Exporting CSVs...")
+    export_csv(data)
 
-    if pending:
-        print(f"  Still pending: {', '.join(pending)}", file=sys.stderr)
+    if refresh_pending:
+        print(f"  Still pending: {', '.join(refresh_pending)}", file=sys.stderr)
         sys.exit(1)
 
 
