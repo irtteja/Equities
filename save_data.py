@@ -266,20 +266,21 @@ def main() -> None:
         indices = fetch_indices(session)
         print(f"  {len(indices)} indices fetched")
 
+    map_from_checkpoint = bool(constituent_map)
+
     if not constituent_map:
         print("Building constituent map...")
         constituent_map = _build_constituent_map(indices, session)
         print(f"  {len(constituent_map)} indices with constituent CSV")
-
-    # Discover any new indices that appeared since the last run
-    new_indices = [
-        d for d in indices
-        if d["index"] not in constituent_map and d["index"] not in constituents
-    ]
-    if new_indices:
-        print(f"  Probing {len(new_indices)} new indices...")
-        new_map = _build_constituent_map(new_indices, session)
-        constituent_map.update(new_map)
+    elif map_from_checkpoint:
+        # On subsequent runs, check for brand-new indices the map hasn't seen yet
+        new_indices = [
+            d for d in indices
+            if d["index"] not in constituent_map and d["index"] not in constituents
+        ]
+        if new_indices:
+            print(f"  Discovering {len(new_indices)} new indices...")
+            constituent_map.update(_build_constituent_map(new_indices, session))
 
     if not pending:
         # First run or after new indices are discovered: queue all uncompleted
