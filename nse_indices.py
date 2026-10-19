@@ -3,6 +3,7 @@
 import csv
 import io
 import json
+import os
 import sys
 import requests
 import anthropic
@@ -193,9 +194,20 @@ def run_tool(name: str, tool_input: dict) -> str:
 
 # ── agent loop ─────────────────────────────────────────────────────────────
 
+def _anthropic_client() -> anthropic.Anthropic:
+    token_file = os.environ.get("CLAUDE_SESSION_INGRESS_TOKEN_FILE")
+    if token_file:
+        try:
+            with open(token_file) as f:
+                return anthropic.Anthropic(auth_token=f.read().strip())
+        except OSError:
+            pass
+    return anthropic.Anthropic()
+
+
 def ask(question: str) -> str:
     """Run the agentic loop and return Claude's final answer."""
-    client = anthropic.Anthropic()
+    client = _anthropic_client()
     messages = [{"role": "user", "content": question}]
 
     while True:

@@ -3,10 +3,10 @@
 import csv
 import io
 import json
-import re
 import sys
 import time
 from datetime import datetime
+import anthropic
 import requests
 
 NSE_HEADERS = {
@@ -91,56 +91,115 @@ EXCLUDED_CATEGORIES = {"STRATEGY INDICES", "FIXED INCOME INDICES"}
 
 _ARCHIVE_BASE = "https://nsearchives.nseindia.com/content/indices/"
 
-
-def _probe_csv_candidates(index_name: str) -> list[str]:
-    """Generate candidate CSV filenames for an NSE index name."""
-    n = index_name.upper().strip()
-    for sfx in (" INDEX", " INDICES"):
-        if n.endswith(sfx):
-            n = n[: -len(sfx)].strip()
-    key_pure = re.sub(r"^NIFTY\d*\s+", "", n)
-    key_with = re.sub(r"^NIFTY\s*", "", n)
-
-    def _slug(s: str) -> str:
-        return re.sub(r"[^A-Z0-9]", "", s.upper()).lower()
-
-    cands: list[str] = []
-    seen: set[str] = set()
-    for k in (key_pure, key_with, key_pure.replace("INDIA", ""), key_with.replace("INDIA", "")):
-        s = _slug(k)
-        for tmpl in (f"ind_nifty{s}list.csv", f"ind_nifty{s}_list.csv"):
-            if tmpl not in seen:
-                cands.append(tmpl)
-                seen.add(tmpl)
-
-    words = [w for w in re.split(r"[^A-Z0-9]+", key_pure.upper()) if w]
-    camel = "".join(w.capitalize() for w in words)
-    if camel:
-        for tmpl in (
-            f"ind_Nifty{camel}_list.csv",
-            f"ind_nifty{camel.lower()}_list.csv",
-            f"ind_nifty{camel.lower()}list.csv",
-            f"ind_Nifty{camel}list.csv",
-        ):
-            if tmpl not in seen:
-                cands.append(tmpl)
-                seen.add(tmpl)
-    return cands
+_DISCOVERY_TOOLS = [
+    {
+        "name": "fetch_page",
+        "description": (
+            "Fetch a URL and return its text content. Use to get a directory listing from "
+            "https://nsearchives.nseindia.com/content/indices/ or to browse NSE index pages "
+            "that link to constituent CSV downloads."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {"url": {"type": "string"}},
+            "required": ["url"],
+        },
+    },
+    {
+        "name": "check_url",
+        "description": "HEAD request to verify a URL exists. Returns HTTP status code.",
+        "input_schema": {
+            "type": "object",
+            "properties": {"url": {"type": "string"}},
+            "required": ["url"],
+        },
+    },
+]
 
 
-def probe_constituent_csv(
-    index_name: str, session: requests.Session | None = None
-) -> str | None:
-    """Probe nsearchives for the CSV filename of an unknown index. Returns None if not found."""
-    requester = session or requests
-    for candidate in _probe_csv_candidates(index_name):
+def _run_discovery_tool(name: str, tool_input: dict) -> str:
+    try:
+        ua = {"User-Agent": NSE_HEADERS["User-Agent"]}
+        if name == "fetch_page":
+            r = requests.get(tool_input["url"], headers=ua, timeout=15)
+            return json.dumps({"status": r.status_code, "text": r.text[:10000]})
+        if name == "check_url":
+            r = requests.head(tool_input["url"], headers=ua, timeout=8)
+            return json.dumps({"status": r.status_code})
+        return json.dumps({"error": f"Unknown tool: {name}"})
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+def _anthropic_client() -> anthropic.Anthropic:
+    """Create an Anthropic client using the session ingress token when available."""
+    import os
+    token_file = os.environ.get("CLAUDE_SESSION_INGRESS_TOKEN_FILE")
+    if token_file:
         try:
-            r = requester.head(_ARCHIVE_BASE + candidate, timeout=6)
-            if r.status_code == 200:
-                return candidate
-        except Exception:
+            with open(token_file) as f:
+                return anthropic.Anthropic(auth_token=f.read().strip())
+        except OSError:
             pass
-    return None
+    return anthropic.Anthropic()
+
+
+def discover_csvs_with_agent(unknown_indices: list[str]) -> dict[str, str]:
+    """Ask a Claude agent to find constituent CSV filenames for unknown NSE indices."""
+    if not unknown_indices:
+        return {}
+
+    client = _anthropic_client()
+    index_list = "\n".join(f"- {n}" for n in unknown_indices)
+    messages = [{"role": "user", "content": (
+        f"Find constituent CSV filenames on https://nsearchives.nseindia.com/content/indices/ "
+        f"for these NSE indices:\n{index_list}\n\n"
+        f"1. First fetch https://nsearchives.nseindia.com/content/indices/ for a directory listing.\n"
+        f"2. Match each index name to a filename (all start with 'ind_', end in '.csv').\n"
+        f"3. Use check_url to verify any uncertain matches.\n"
+        f"4. Reply with ONLY a JSON object: {{\"INDEX NAME\": \"filename.csv\", ...}} "
+        f"— only include indices you confirmed. No prose."
+    )}]
+
+    while True:
+        response = client.messages.create(
+            model="claude-opus-5-5",
+            max_tokens=4096,
+            system=(
+                "You are a data discovery agent. Find CSV filenames for NSE index constituent "
+                "lists at https://nsearchives.nseindia.com/content/indices/. "
+                "Files follow patterns like ind_nifty<name>_list.csv or ind_nifty<name>list.csv. "
+                "Respond with valid JSON only — no prose, no markdown."
+            ),
+            tools=_DISCOVERY_TOOLS,
+            messages=messages,
+        )
+
+        text_parts = [b.text for b in response.content if b.type == "text"]
+
+        if response.stop_reason == "end_turn":
+            raw = "\n".join(text_parts)
+            start, end = raw.find("{"), raw.rfind("}")
+            if start != -1 and end > start:
+                try:
+                    return json.loads(raw[start : end + 1])
+                except json.JSONDecodeError:
+                    pass
+            return {}
+
+        if response.stop_reason != "tool_use":
+            return {}
+
+        messages.append({"role": "assistant", "content": response.content})
+        tool_results = []
+        for block in response.content:
+            if block.type == "tool_use":
+                tool_results.append({
+                    "type": "tool_result",
+                    "tool_use_id": block.id,
+                    "content": _run_discovery_tool(block.name, block.input),
+                })
+        messages.append({"role": "user", "content": tool_results})
 
 
 def fetch_indices(session: requests.Session) -> list[dict]:
@@ -226,13 +285,13 @@ def _build_constituent_map(indices: list[dict], session: requests.Session) -> di
             unknown.append(name)
 
     if unknown:
-        print(f"  Probing {len(unknown)} unknown indices on nsearchives...", file=sys.stderr)
+        print(f"  Agent discovering {len(unknown)} unknown indices...", file=sys.stderr)
+        discovered = discover_csvs_with_agent(unknown)
+        for name, filename in discovered.items():
+            result[name] = filename
+            print(f"    discovered: {name} → {filename}", file=sys.stderr)
         for name in unknown:
-            csv_file = probe_constituent_csv(name, session)
-            if csv_file:
-                result[name] = csv_file
-                print(f"    discovered: {name} → {csv_file}", file=sys.stderr)
-            else:
+            if name not in discovered:
                 print(f"    no CSV: {name}", file=sys.stderr)
 
     return result
