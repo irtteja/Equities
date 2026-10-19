@@ -111,10 +111,15 @@ def main() -> None:
             data = json.load(f)
         constituents: dict[str, list[dict]] = data.get("constituents", {})
         indices: list[dict] = data.get("indices", [])
-        print(f"Resuming from checkpoint: {len(constituents)}/{len(CONSTITUENT_CSV)} constituent lists already fetched")
+        # pending: indices not yet successfully fetched
+        pending: list[str] = data.get("pending", list(CONSTITUENT_CSV.keys()))
+        pending = [p for p in pending if p not in constituents]  # drop already done
+        print(f"Resuming: {len(constituents)} done, {len(pending)} pending")
     except FileNotFoundError:
         constituents = {}
         indices = []
+        pending = list(CONSTITUENT_CSV.keys())
+        data = {}
 
     if not indices:
         print("Connecting to NSE India...")
@@ -126,29 +131,34 @@ def main() -> None:
             "fetched_at": datetime.now().isoformat(),
             "indices": indices,
             "constituents": constituents,
+            "pending": pending,
         }
         save(out_file, data)
 
-    pending = [(name, fn) for name, fn in CONSTITUENT_CSV.items() if name not in constituents]
-    print(f"Fetching {len(pending)} remaining constituent lists...")
-    failed = []
+    print(f"Fetching {len(pending)} constituent lists...")
 
-    for index_name, filename in pending:
+    for index_name in list(pending):
+        filename = CONSTITUENT_CSV[index_name]
         try:
             stocks = fetch_constituents(filename)
             constituents[index_name] = stocks
+            pending.remove(index_name)
             data["constituents"] = constituents
-            save(out_file, data)  # checkpoint after every successful fetch
+            data["pending"] = pending
+            save(out_file, data)  # checkpoint: persist success + updated pending
             print(f"  {index_name}: {len(stocks)} stocks")
         except Exception as e:
-            failed.append(index_name)
             print(f"  {index_name}: FAILED — {e}", file=sys.stderr)
+
+    data["pending"] = pending
+    save(out_file, data)
 
     total_stocks = sum(len(v) for v in constituents.values())
     print(f"\nSaved to {out_file}")
-    print(f"  {len(indices)} indices, {len(constituents)} constituent lists, {total_stocks} stock records")
-    if failed:
-        print(f"  {len(failed)} failed (re-run to retry): {', '.join(failed)}", file=sys.stderr)
+    print(f"  {len(indices)} indices, {len(constituents)}/{len(CONSTITUENT_CSV)} constituent lists, {total_stocks} stock records")
+    if pending:
+        print(f"  Still pending: {', '.join(pending)}", file=sys.stderr)
+        sys.exit(1)  # signal to caller that work remains
 
 
 if __name__ == "__main__":
