@@ -42,6 +42,7 @@ CONSTITUENT_CSV = {
     "NIFTY COMMODITIES":       "ind_niftycommoditieslist.csv",
     "NIFTY INDIA CONSUMPTION": "ind_niftyconsumptionlist.csv",
     "NIFTY CONSUMER DURABLES": "ind_niftyconsumerdurableslist.csv",
+    "NIFTY MICROCAP 250":      "ind_niftymicrocap250_list.csv",
 }
 
 NSE_HEADERS = {

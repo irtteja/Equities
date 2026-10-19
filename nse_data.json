@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-10-19T10:07:04.870432",
+  "fetched_at": "2026-10-19T10:21:39.392546",
   "indices": [
     {
       "key": "INDICES ELIGIBLE IN DERIVATIVES",
@@ -413,9 +413,9 @@
       "key": "BROAD MARKET INDICES",
       "index": "INDIA VIX",
       "indexSymbol": "INDIA VIX",
-      "last": 14.7,
-      "variation": 0.64,
-      "percentChange": 4.53,
+      "last": 14.69,
+      "variation": 0.63,
+      "percentChange": 4.48,
       "open": 14.06,
       "high": 14.97,
       "low": 13.32,
@@ -426,8 +426,8 @@
       "pe": "0",
       "pb": "0",
       "dy": "0",
-      "perChange365d": 26.4,
-      "perChange30d": 29.06,
+      "perChange365d": 26.31,
+      "perChange30d": 28.97,
       "date365dAgo": "17-Oct-2025",
       "date30dAgo": "18-Sep-2026",
       "previousDay": "16-Oct-2026",
@@ -5581,6 +5581,262 @@
       "TITAN",
       "VOLTAS",
       "WHIRLPOOL"
+    ],
+    "NIFTY MICROCAP 250": [
+      "AXISCADES",
+      "AARTIPHARM",
+      "ABFRL",
+      "ABLBL",
+      "AVL",
+      "ADVENZYMES",
+      "AEQUS",
+      "AEROFLEX",
+      "AKUMS",
+      "ALKYLAMINE",
+      "AMAGI",
+      "APOLLO",
+      "ACI",
+      "ARVINDFASN",
+      "ARVIND",
+      "ASHAPURMIN",
+      "ASHOKA",
+      "ASTRAMICRO",
+      "ATLANTAELE",
+      "AURIONPRO",
+      "AVALON",
+      "BAJAJCON",
+      "BALAMINES",
+      "BALUFORGE",
+      "BANCOINDIA",
+      "BIRLACORPN",
+      "BLACKBUCK",
+      "BLUEJET",
+      "BLUESTONE",
+      "BORORENEW",
+      "MAPMYINDIA",
+      "CMRGREEN",
+      "CMSINFO",
+      "CSBBANK",
+      "CAMPUS",
+      "CRAMC",
+      "CAPILLARY",
+      "CEIGALL",
+      "CELLO",
+      "CENTUM",
+      "CERA",
+      "CHALET",
+      "DCBBANK",
+      "DATAMATICS",
+      "DIACABS",
+      "DBL",
+      "DUMMYINGL1",
+      "DUMMYINGL2",
+      "DUMMYINXGN",
+      "DYNAMATECH",
+      "E2E",
+      "EPL",
+      "EDELWEISS",
+      "EMIL",
+      "ELECTCAST",
+      "ELLEN",
+      "EMBDL",
+      "ENTERO",
+      "EIEL",
+      "EQUITASBNK",
+      "ERIS",
+      "FEDFINA",
+      "FIEMIND",
+      "FINPIPE",
+      "UTLSOLAR",
+      "GMRP&UI",
+      "EBGNG",
+      "GRWRHITECH",
+      "GENUSPOWER",
+      "GODREJAGRO",
+      "GOKEX",
+      "GOKULAGRO",
+      "GOLDIAM",
+      "GREAVESCOT",
+      "GRINDWELL",
+      "GUJALKALI",
+      "GAEL",
+      "GNFC",
+      "GPPL",
+      "GSFC",
+      "HGINFRA",
+      "HAPPSTMNDS",
+      "HAPPYFORGE",
+      "HCG",
+      "HERITGFOOD",
+      "HCC",
+      "IFBIND",
+      "IIFLCAPS",
+      "INDGN",
+      "INDIAGLYCO",
+      "IMFA",
+      "INDIGOPNTS",
+      "ICIL",
+      "IONEXCHANG",
+      "JAIBALAJI",
+      "JKPAPER",
+      "JAMNAAUTO",
+      "JSFB",
+      "JAYNECOIND",
+      "JSLL",
+      "JUBLPHARMA",
+      "JUSTDIAL",
+      "JYOTHYLAB",
+      "KNRCON",
+      "KPIGREEN",
+      "KRBL",
+      "KRN",
+      "KANSAINER",
+      "KTKBANK",
+      "KSCL",
+      "KIRLPNU",
+      "KITEX",
+      "KMEW",
+      "KWIL",
+      "LATENTVIEW",
+      "LXCHEM",
+      "IXIGO",
+      "THELEELA",
+      "LLOYDSENGG",
+      "LLOYDSENT",
+      "LUMAXTECH",
+      "LUMAXIND",
+      "MOIL",
+      "MSTCLTD",
+      "MBAPL",
+      "MANORAMA",
+      "MARKSANS",
+      "MASTEK",
+      "MEDPLUS",
+      "METROPOLIS",
+      "MIDHANI",
+      "BECTORFOOD",
+      "NEOGEN",
+      "NFL",
+      "NAZARA",
+      "NEPHROPLUS",
+      "NETWORK18",
+      "NEWGEN",
+      "NIVABUPA",
+      "NORTHARC",
+      "OMNI",
+      "KISSHT",
+      "OSWALPUMPS",
+      "PNGJL",
+      "PCJEWELLER",
+      "PDSL",
+      "PNCINFRA",
+      "PTC",
+      "PAISALO",
+      "PARAS",
+      "PARKHOSPS",
+      "PGIL",
+      "PFIZER",
+      "PICCADIL",
+      "POWERMECH",
+      "POWERICA",
+      "PRAJIND",
+      "PRECWIRE",
+      "PRICOLLTD",
+      "PGHL",
+      "PURVA",
+      "QPOWER",
+      "QUESS",
+      "RAIN",
+      "RALLIS",
+      "RCF",
+      "RATEGAIN",
+      "RATNAMANI",
+      "RTNPOWER",
+      "RAYMONDLSL",
+      "REFEX",
+      "RELAXO",
+      "RELIGARE",
+      "RESPONIND",
+      "RBA",
+      "ROUTE",
+      "SJS",
+      "SBFC",
+      "SEDEMAC",
+      "SGMART",
+      "SIGMAADV",
+      "SKYGOLD",
+      "SMLMAH",
+      "LOTUSDEV",
+      "SAFARI",
+      "SAMHI",
+      "SANDUMA",
+      "SAPPHIRE",
+      "SAREGAMA",
+      "SENCO",
+      "SENORES",
+      "SHADOWFAX",
+      "SHAILY",
+      "SHAKTIPUMP",
+      "SHARDACROP",
+      "SHAREINDIA",
+      "SFL",
+      "SHILCTECH",
+      "SHILPAMED",
+      "RENUKA",
+      "SHREEJISPG",
+      "SKIPPER",
+      "SONATSOFTW",
+      "SOUTHBANK",
+      "SWSOLAR",
+      "STAR",
+      "STYLAMIND",
+      "SUBROS",
+      "SUDARSCHEM",
+      "SUDEEPPHRM",
+      "SPARC",
+      "SUNDRMFAST",
+      "SUNFLAG",
+      "SUNTECK",
+      "SPLPETRO",
+      "SUPRIYA",
+      "SURYAROSNI",
+      "SUVEN",
+      "TARC",
+      "TTKPRESTIG",
+      "TVSSCS",
+      "TMB",
+      "TANLA",
+      "TEXRAIL",
+      "THOMASCOOK",
+      "THYROCARE",
+      "TI",
+      "TIMETECHNO",
+      "TIMEX",
+      "TIPSMUSIC",
+      "TRANSRAILL",
+      "TRIVENIPT",
+      "UJJIVANSFB",
+      "UNIMECH",
+      "VGUARD",
+      "VMART",
+      "VIPIND",
+      "V2RETAIL",
+      "DBREALTY",
+      "WABAG",
+      "VAIBHAVGBL",
+      "MANYAVAR",
+      "VESUVIUS",
+      "VIKRAMSOLR",
+      "VIYASH",
+      "VOLTAMP",
+      "WAAREERTL",
+      "WAKEFIT",
+      "WEWORK",
+      "WEBELSOLAR",
+      "WELENT",
+      "WESTLIFE",
+      "YATHARTH",
+      "ZAGGLE"
     ]
   },
   "pending": [],
@@ -9140,6 +9396,1756 @@
       "Industry": "Financial Services",
       "Series": "EQ",
       "ISIN Code": "INE608A01012"
+    },
+    "AXISCADES": {
+      "Symbol": "AXISCADES",
+      "Company Name": "AXISCADES Technologies Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE555B01013"
+    },
+    "AARTIPHARM": {
+      "Symbol": "AARTIPHARM",
+      "Company Name": "Aarti Pharmalabs Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE0LRU01027"
+    },
+    "ABFRL": {
+      "Symbol": "ABFRL",
+      "Company Name": "Aditya Birla Fashion and Retail Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE647O01011"
+    },
+    "ABLBL": {
+      "Symbol": "ABLBL",
+      "Company Name": "Aditya Birla Lifestyle Brands Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE14LE01019"
+    },
+    "AVL": {
+      "Symbol": "AVL",
+      "Company Name": "Aditya Vision Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE679V01027"
+    },
+    "ADVENZYMES": {
+      "Symbol": "ADVENZYMES",
+      "Company Name": "Advanced Enzyme Tech Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE837H01020"
+    },
+    "AEQUS": {
+      "Symbol": "AEQUS",
+      "Company Name": "Aequs Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE947N01017"
+    },
+    "AEROFLEX": {
+      "Symbol": "AEROFLEX",
+      "Company Name": "Aeroflex Industries Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE024001021"
+    },
+    "AKUMS": {
+      "Symbol": "AKUMS",
+      "Company Name": "Akums Drugs and Pharmaceuticals Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE09XN01023"
+    },
+    "ALKYLAMINE": {
+      "Symbol": "ALKYLAMINE",
+      "Company Name": "Alkyl Amines Chemicals Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE150B01039"
+    },
+    "AMAGI": {
+      "Symbol": "AMAGI",
+      "Company Name": "Amagi Media Labs Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE121R01077"
+    },
+    "APOLLO": {
+      "Symbol": "APOLLO",
+      "Company Name": "Apollo Micro Systems Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE713T01028"
+    },
+    "ACI": {
+      "Symbol": "ACI",
+      "Company Name": "Archean Chemical Industries Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE128X01021"
+    },
+    "ARVINDFASN": {
+      "Symbol": "ARVINDFASN",
+      "Company Name": "Arvind Fashions Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE955V01021"
+    },
+    "ARVIND": {
+      "Symbol": "ARVIND",
+      "Company Name": "Arvind Ltd.",
+      "Industry": "Textiles",
+      "Series": "EQ",
+      "ISIN Code": "INE034A01011"
+    },
+    "ASHAPURMIN": {
+      "Symbol": "ASHAPURMIN",
+      "Company Name": "Ashapura Minechem Ltd.",
+      "Industry": "Metals & Mining",
+      "Series": "EQ",
+      "ISIN Code": "INE348A01023"
+    },
+    "ASHOKA": {
+      "Symbol": "ASHOKA",
+      "Company Name": "Ashoka Buildcon Ltd.",
+      "Industry": "Construction",
+      "Series": "EQ",
+      "ISIN Code": "INE442H01029"
+    },
+    "ASTRAMICRO": {
+      "Symbol": "ASTRAMICRO",
+      "Company Name": "Astra Microwave Products Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE386C01029"
+    },
+    "ATLANTAELE": {
+      "Symbol": "ATLANTAELE",
+      "Company Name": "Atlanta Electricals Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE0Z4F01028"
+    },
+    "AURIONPRO": {
+      "Symbol": "AURIONPRO",
+      "Company Name": "Aurionpro Solution Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE132H01018"
+    },
+    "AVALON": {
+      "Symbol": "AVALON",
+      "Company Name": "Avalon Technologies Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE0LCL01028"
+    },
+    "BAJAJCON": {
+      "Symbol": "BAJAJCON",
+      "Company Name": "Bajaj Consumer Care Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE933K01021"
+    },
+    "BALAMINES": {
+      "Symbol": "BALAMINES",
+      "Company Name": "Balaji Amines Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE050E01027"
+    },
+    "BALUFORGE": {
+      "Symbol": "BALUFORGE",
+      "Company Name": "Balu Forge Industries Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE011E01029"
+    },
+    "BANCOINDIA": {
+      "Symbol": "BANCOINDIA",
+      "Company Name": "Banco Products (India) Ltd.",
+      "Industry": "Automobile and Auto Components",
+      "Series": "EQ",
+      "ISIN Code": "INE213C01025"
+    },
+    "BIRLACORPN": {
+      "Symbol": "BIRLACORPN",
+      "Company Name": "Birla Corporation Ltd.",
+      "Industry": "Construction Materials",
+      "Series": "EQ",
+      "ISIN Code": "INE340A01012"
+    },
+    "BLACKBUCK": {
+      "Symbol": "BLACKBUCK",
+      "Company Name": "Blackbuck Ltd.",
+      "Industry": "Services",
+      "Series": "EQ",
+      "ISIN Code": "INE0UIZ01018"
+    },
+    "BLUEJET": {
+      "Symbol": "BLUEJET",
+      "Company Name": "Blue Jet Healthcare Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE0KBH01020"
+    },
+    "BLUESTONE": {
+      "Symbol": "BLUESTONE",
+      "Company Name": "BlueStone Jewellery and Lifestyle Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE304W01038"
+    },
+    "BORORENEW": {
+      "Symbol": "BORORENEW",
+      "Company Name": "Borosil Renewables Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE666D01022"
+    },
+    "MAPMYINDIA": {
+      "Symbol": "MAPMYINDIA",
+      "Company Name": "C.E. Info Systems Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE0BV301023"
+    },
+    "CMRGREEN": {
+      "Symbol": "CMRGREEN",
+      "Company Name": "CMR Green Technologies Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE00WV01027"
+    },
+    "CMSINFO": {
+      "Symbol": "CMSINFO",
+      "Company Name": "CMS Info Systems Ltd.",
+      "Industry": "Services",
+      "Series": "EQ",
+      "ISIN Code": "INE925R01014"
+    },
+    "CSBBANK": {
+      "Symbol": "CSBBANK",
+      "Company Name": "CSB Bank Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE679A01013"
+    },
+    "CAMPUS": {
+      "Symbol": "CAMPUS",
+      "Company Name": "Campus Activewear Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE278Y01022"
+    },
+    "CRAMC": {
+      "Symbol": "CRAMC",
+      "Company Name": "Canara Robeco Asset Management Company Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE218I01013"
+    },
+    "CAPILLARY": {
+      "Symbol": "CAPILLARY",
+      "Company Name": "Capillary Technologies India Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE0ILV01024"
+    },
+    "CEIGALL": {
+      "Symbol": "CEIGALL",
+      "Company Name": "Ceigall India Ltd.",
+      "Industry": "Construction",
+      "Series": "EQ",
+      "ISIN Code": "INE0AG901020"
+    },
+    "CELLO": {
+      "Symbol": "CELLO",
+      "Company Name": "Cello World Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE0LMW01024"
+    },
+    "CENTUM": {
+      "Symbol": "CENTUM",
+      "Company Name": "Centum Electronics Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE320B01020"
+    },
+    "CERA": {
+      "Symbol": "CERA",
+      "Company Name": "Cera Sanitaryware Ltd",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE739E01017"
+    },
+    "CHALET": {
+      "Symbol": "CHALET",
+      "Company Name": "Chalet Hotels Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE427F01016"
+    },
+    "DCBBANK": {
+      "Symbol": "DCBBANK",
+      "Company Name": "DCB Bank Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE503A01015"
+    },
+    "DATAMATICS": {
+      "Symbol": "DATAMATICS",
+      "Company Name": "Datamatics Global Services Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE365B01017"
+    },
+    "DIACABS": {
+      "Symbol": "DIACABS",
+      "Company Name": "Diamond Power Infrastructure Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "BE",
+      "ISIN Code": "INE989C01038"
+    },
+    "DBL": {
+      "Symbol": "DBL",
+      "Company Name": "Dilip Buildcon Ltd.",
+      "Industry": "Construction",
+      "Series": "EQ",
+      "ISIN Code": "INE917M01012"
+    },
+    "DUMMYINGL1": {
+      "Symbol": "DUMMYINGL1",
+      "Company Name": "Dummy India Glycols ltd. 1",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "DU1560A01023"
+    },
+    "DUMMYINGL2": {
+      "Symbol": "DUMMYINGL2",
+      "Company Name": "Dummy India Glycols ltd. 2",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "DU2560A01023"
+    },
+    "DUMMYINXGN": {
+      "Symbol": "DUMMYINXGN",
+      "Company Name": "Dummy Inox Green Ltd.",
+      "Industry": "Construction",
+      "Series": "EQ",
+      "ISIN Code": "DUM510W01014"
+    },
+    "DYNAMATECH": {
+      "Symbol": "DYNAMATECH",
+      "Company Name": "Dynamatic Technologies Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE221B01012"
+    },
+    "E2E": {
+      "Symbol": "E2E",
+      "Company Name": "E2E NETWORKS Ltd.",
+      "Industry": "Information Technology",
+      "Series": "BE",
+      "ISIN Code": "INE255Z01027"
+    },
+    "EPL": {
+      "Symbol": "EPL",
+      "Company Name": "EPL Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE255A01020"
+    },
+    "EDELWEISS": {
+      "Symbol": "EDELWEISS",
+      "Company Name": "Edelweiss Financial Services Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE532F01054"
+    },
+    "EMIL": {
+      "Symbol": "EMIL",
+      "Company Name": "Electronics Mart India Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE02YR01019"
+    },
+    "ELECTCAST": {
+      "Symbol": "ELECTCAST",
+      "Company Name": "Electrosteel Castings Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE086A01029"
+    },
+    "ELLEN": {
+      "Symbol": "ELLEN",
+      "Company Name": "Ellenbarrie Industrial Gases Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE236E01022"
+    },
+    "EMBDL": {
+      "Symbol": "EMBDL",
+      "Company Name": "Embassy Developments Ltd.",
+      "Industry": "Realty",
+      "Series": "EQ",
+      "ISIN Code": "INE069I01010"
+    },
+    "ENTERO": {
+      "Symbol": "ENTERO",
+      "Company Name": "Entero Healthcare Solutions Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE010601016"
+    },
+    "EIEL": {
+      "Symbol": "EIEL",
+      "Company Name": "Enviro Infra Engineers Ltd.",
+      "Industry": "Utilities",
+      "Series": "EQ",
+      "ISIN Code": "INE0LLY01014"
+    },
+    "EQUITASBNK": {
+      "Symbol": "EQUITASBNK",
+      "Company Name": "Equitas Small Finance Bank Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE063P01018"
+    },
+    "ERIS": {
+      "Symbol": "ERIS",
+      "Company Name": "Eris Lifesciences Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE406M01024"
+    },
+    "FEDFINA": {
+      "Symbol": "FEDFINA",
+      "Company Name": "Fedbank Financial Services Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE007N01010"
+    },
+    "FIEMIND": {
+      "Symbol": "FIEMIND",
+      "Company Name": "Fiem Industries Ltd",
+      "Industry": "Automobile and Auto Components",
+      "Series": "EQ",
+      "ISIN Code": "INE737H01014"
+    },
+    "FINPIPE": {
+      "Symbol": "FINPIPE",
+      "Company Name": "Finolex Industries Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE183A01024"
+    },
+    "UTLSOLAR": {
+      "Symbol": "UTLSOLAR",
+      "Company Name": "Fujiyama Power Systems Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE12UR01024"
+    },
+    "GMRP&UI": {
+      "Symbol": "GMRP&UI",
+      "Company Name": "GMR Power and Urban Infra Ltd.",
+      "Industry": "Power",
+      "Series": "EQ",
+      "ISIN Code": "INE0CU601026"
+    },
+    "EBGNG": {
+      "Symbol": "EBGNG",
+      "Company Name": "GNG Electronics Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE18JU01028"
+    },
+    "GRWRHITECH": {
+      "Symbol": "GRWRHITECH",
+      "Company Name": "Garware Hi-Tech Films Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE291A01017"
+    },
+    "GENUSPOWER": {
+      "Symbol": "GENUSPOWER",
+      "Company Name": "Genus Power Infrastructures Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE955D01029"
+    },
+    "GODREJAGRO": {
+      "Symbol": "GODREJAGRO",
+      "Company Name": "Godrej Agrovet Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE850D01014"
+    },
+    "GOKEX": {
+      "Symbol": "GOKEX",
+      "Company Name": "Gokaldas Exports Ltd.",
+      "Industry": "Textiles",
+      "Series": "EQ",
+      "ISIN Code": "INE887G01027"
+    },
+    "GOKULAGRO": {
+      "Symbol": "GOKULAGRO",
+      "Company Name": "Gokul Agro Resources Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE314T01033"
+    },
+    "GOLDIAM": {
+      "Symbol": "GOLDIAM",
+      "Company Name": "Goldiam International Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE025B01025"
+    },
+    "GREAVESCOT": {
+      "Symbol": "GREAVESCOT",
+      "Company Name": "Greaves Cotton Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE224A01026"
+    },
+    "GRINDWELL": {
+      "Symbol": "GRINDWELL",
+      "Company Name": "Grindwell Norton Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE536A01023"
+    },
+    "GUJALKALI": {
+      "Symbol": "GUJALKALI",
+      "Company Name": "Gujarat Alkalies & Chemicals Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE186A01019"
+    },
+    "GAEL": {
+      "Symbol": "GAEL",
+      "Company Name": "Gujarat Ambuja Exports Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE036B01030"
+    },
+    "GNFC": {
+      "Symbol": "GNFC",
+      "Company Name": "Gujarat Narmada Valley Fertilizers and Chemicals Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE113A01013"
+    },
+    "GPPL": {
+      "Symbol": "GPPL",
+      "Company Name": "Gujarat Pipavav Port Ltd.",
+      "Industry": "Services",
+      "Series": "EQ",
+      "ISIN Code": "INE517F01014"
+    },
+    "GSFC": {
+      "Symbol": "GSFC",
+      "Company Name": "Gujarat State Fertilizers & Chemicals Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE026A01025"
+    },
+    "HGINFRA": {
+      "Symbol": "HGINFRA",
+      "Company Name": "H.G. Infra Engineering Ltd.",
+      "Industry": "Construction",
+      "Series": "EQ",
+      "ISIN Code": "INE926X01010"
+    },
+    "HAPPSTMNDS": {
+      "Symbol": "HAPPSTMNDS",
+      "Company Name": "Happiest Minds Technologies Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE419U01012"
+    },
+    "HAPPYFORGE": {
+      "Symbol": "HAPPYFORGE",
+      "Company Name": "Happy Forgings Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE330T01021"
+    },
+    "HCG": {
+      "Symbol": "HCG",
+      "Company Name": "Healthcare Global Enterprises Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE075I01017"
+    },
+    "HERITGFOOD": {
+      "Symbol": "HERITGFOOD",
+      "Company Name": "Heritage Foods Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE978A01027"
+    },
+    "HCC": {
+      "Symbol": "HCC",
+      "Company Name": "Hindustan Construction Co. Ltd.",
+      "Industry": "Construction",
+      "Series": "EQ",
+      "ISIN Code": "INE549A01026"
+    },
+    "IFBIND": {
+      "Symbol": "IFBIND",
+      "Company Name": "IFB Industries Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE559A01017"
+    },
+    "IIFLCAPS": {
+      "Symbol": "IIFLCAPS",
+      "Company Name": "IIFL Capital Services Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE489L01022"
+    },
+    "INDGN": {
+      "Symbol": "INDGN",
+      "Company Name": "Indegene Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE065X01017"
+    },
+    "INDIAGLYCO": {
+      "Symbol": "INDIAGLYCO",
+      "Company Name": "India Glycols Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE560A01023"
+    },
+    "IMFA": {
+      "Symbol": "IMFA",
+      "Company Name": "Indian Metals & Ferro Alloys Ltd.",
+      "Industry": "Metals & Mining",
+      "Series": "EQ",
+      "ISIN Code": "INE919H01018"
+    },
+    "INDIGOPNTS": {
+      "Symbol": "INDIGOPNTS",
+      "Company Name": "Indigo Paints Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE09VQ01012"
+    },
+    "ICIL": {
+      "Symbol": "ICIL",
+      "Company Name": "Indo Count Industries Ltd.",
+      "Industry": "Textiles",
+      "Series": "EQ",
+      "ISIN Code": "INE483B01026"
+    },
+    "IONEXCHANG": {
+      "Symbol": "IONEXCHANG",
+      "Company Name": "Ion Exchange (India) Ltd.",
+      "Industry": "Utilities",
+      "Series": "EQ",
+      "ISIN Code": "INE570A01022"
+    },
+    "JAIBALAJI": {
+      "Symbol": "JAIBALAJI",
+      "Company Name": "JAI BALAJI INDUSTRIES Ltd.",
+      "Industry": "Metals & Mining",
+      "Series": "EQ",
+      "ISIN Code": "INE091G01026"
+    },
+    "JKPAPER": {
+      "Symbol": "JKPAPER",
+      "Company Name": "JK Paper Ltd.",
+      "Industry": "Forest Materials",
+      "Series": "EQ",
+      "ISIN Code": "INE789E01012"
+    },
+    "JAMNAAUTO": {
+      "Symbol": "JAMNAAUTO",
+      "Company Name": "Jamna Auto Industries Ltd.",
+      "Industry": "Automobile and Auto Components",
+      "Series": "EQ",
+      "ISIN Code": "INE039C01032"
+    },
+    "JSFB": {
+      "Symbol": "JSFB",
+      "Company Name": "Jana Small Finance Bank Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE953L01027"
+    },
+    "JAYNECOIND": {
+      "Symbol": "JAYNECOIND",
+      "Company Name": "Jayaswal Neco Industries Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE854B01010"
+    },
+    "JSLL": {
+      "Symbol": "JSLL",
+      "Company Name": "Jeena Sikho Lifecare Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE0J5801029"
+    },
+    "JUBLPHARMA": {
+      "Symbol": "JUBLPHARMA",
+      "Company Name": "Jubilant Pharmova Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE700A01033"
+    },
+    "JUSTDIAL": {
+      "Symbol": "JUSTDIAL",
+      "Company Name": "Justdial Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE599M01018"
+    },
+    "JYOTHYLAB": {
+      "Symbol": "JYOTHYLAB",
+      "Company Name": "Jyothy Labs Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE668F01031"
+    },
+    "KNRCON": {
+      "Symbol": "KNRCON",
+      "Company Name": "KNR Constructions Ltd.",
+      "Industry": "Construction",
+      "Series": "EQ",
+      "ISIN Code": "INE634I01029"
+    },
+    "KPIGREEN": {
+      "Symbol": "KPIGREEN",
+      "Company Name": "KPI Green Energy Ltd.",
+      "Industry": "Power",
+      "Series": "EQ",
+      "ISIN Code": "INE542W01025"
+    },
+    "KRBL": {
+      "Symbol": "KRBL",
+      "Company Name": "KRBL Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE001B01026"
+    },
+    "KRN": {
+      "Symbol": "KRN",
+      "Company Name": "KRN HEAT EXCHANGER AND REFRIGERATION Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE0Q3J01015"
+    },
+    "KANSAINER": {
+      "Symbol": "KANSAINER",
+      "Company Name": "Kansai Nerolac Paints Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE531A01024"
+    },
+    "KTKBANK": {
+      "Symbol": "KTKBANK",
+      "Company Name": "Karnataka Bank Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE614B01018"
+    },
+    "KSCL": {
+      "Symbol": "KSCL",
+      "Company Name": "Kaveri Seed Company Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE455I01029"
+    },
+    "KIRLPNU": {
+      "Symbol": "KIRLPNU",
+      "Company Name": "Kirloskar Pneumatic Company Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE811A01038"
+    },
+    "KITEX": {
+      "Symbol": "KITEX",
+      "Company Name": "Kitex Garments Ltd.",
+      "Industry": "Textiles",
+      "Series": "EQ",
+      "ISIN Code": "INE602G01020"
+    },
+    "KMEW": {
+      "Symbol": "KMEW",
+      "Company Name": "Knowledge Marine & Engineering Works Ltd.",
+      "Industry": "Services",
+      "Series": "EQ",
+      "ISIN Code": "INE0CJD01029"
+    },
+    "KWIL": {
+      "Symbol": "KWIL",
+      "Company Name": "Kwality Wall's (India) Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE2KCE01013"
+    },
+    "LATENTVIEW": {
+      "Symbol": "LATENTVIEW",
+      "Company Name": "Latent View Analytics Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE0I7C01011"
+    },
+    "LXCHEM": {
+      "Symbol": "LXCHEM",
+      "Company Name": "Laxmi Organic Industries Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE576O01020"
+    },
+    "IXIGO": {
+      "Symbol": "IXIGO",
+      "Company Name": "Le Travenues Technology Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE0HV901016"
+    },
+    "THELEELA": {
+      "Symbol": "THELEELA",
+      "Company Name": "Leela Palaces Hotels & Resorts Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE0AQ201015"
+    },
+    "LLOYDSENGG": {
+      "Symbol": "LLOYDSENGG",
+      "Company Name": "Lloyds Engineering Works Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE093R01011"
+    },
+    "LLOYDSENT": {
+      "Symbol": "LLOYDSENT",
+      "Company Name": "Lloyds Enterprises Ltd.",
+      "Industry": "Metals & Mining",
+      "Series": "EQ",
+      "ISIN Code": "INE080I01025"
+    },
+    "LUMAXTECH": {
+      "Symbol": "LUMAXTECH",
+      "Company Name": "Lumax Auto Technologies Ltd.",
+      "Industry": "Automobile and Auto Components",
+      "Series": "EQ",
+      "ISIN Code": "INE872H01027"
+    },
+    "LUMAXIND": {
+      "Symbol": "LUMAXIND",
+      "Company Name": "Lumax Industries Ltd.",
+      "Industry": "Automobile and Auto Components",
+      "Series": "EQ",
+      "ISIN Code": "INE162B01018"
+    },
+    "MOIL": {
+      "Symbol": "MOIL",
+      "Company Name": "MOIL Ltd.",
+      "Industry": "Metals & Mining",
+      "Series": "EQ",
+      "ISIN Code": "INE490G01020"
+    },
+    "MSTCLTD": {
+      "Symbol": "MSTCLTD",
+      "Company Name": "MSTC Ltd.",
+      "Industry": "Services",
+      "Series": "EQ",
+      "ISIN Code": "INE255X01014"
+    },
+    "MBAPL": {
+      "Symbol": "MBAPL",
+      "Company Name": "Madhya Bharat Agro Products Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE900L01028"
+    },
+    "MANORAMA": {
+      "Symbol": "MANORAMA",
+      "Company Name": "Manorama Industries Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE00VM01036"
+    },
+    "MARKSANS": {
+      "Symbol": "MARKSANS",
+      "Company Name": "Marksans Pharma Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE750C01026"
+    },
+    "MASTEK": {
+      "Symbol": "MASTEK",
+      "Company Name": "Mastek Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE759A01021"
+    },
+    "MEDPLUS": {
+      "Symbol": "MEDPLUS",
+      "Company Name": "Medplus Health Services Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE804L01022"
+    },
+    "METROPOLIS": {
+      "Symbol": "METROPOLIS",
+      "Company Name": "Metropolis Healthcare Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE112L01020"
+    },
+    "MIDHANI": {
+      "Symbol": "MIDHANI",
+      "Company Name": "Mishra Dhatu Nigam Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE099Z01011"
+    },
+    "BECTORFOOD": {
+      "Symbol": "BECTORFOOD",
+      "Company Name": "Mrs. Bectors Food Specialities Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE495P01020"
+    },
+    "NEOGEN": {
+      "Symbol": "NEOGEN",
+      "Company Name": "NEOGEN CHEMICALS LTD.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE136S01016"
+    },
+    "NFL": {
+      "Symbol": "NFL",
+      "Company Name": "National Fertilizers Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE870D01012"
+    },
+    "NEPHROPLUS": {
+      "Symbol": "NEPHROPLUS",
+      "Company Name": "Nephrocare Health Services Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE428V01029"
+    },
+    "NEWGEN": {
+      "Symbol": "NEWGEN",
+      "Company Name": "Newgen Software Technologies Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE619B01017"
+    },
+    "NIVABUPA": {
+      "Symbol": "NIVABUPA",
+      "Company Name": "Niva Bupa Health Insurance Company Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE995S01015"
+    },
+    "NORTHARC": {
+      "Symbol": "NORTHARC",
+      "Company Name": "Northern Arc Capital Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE850M01015"
+    },
+    "OMNI": {
+      "Symbol": "OMNI",
+      "Company Name": "Omnitech Engineering Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE0UH301010"
+    },
+    "KISSHT": {
+      "Symbol": "KISSHT",
+      "Company Name": "OnEMI Technology Solutions Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE12F801023"
+    },
+    "OSWALPUMPS": {
+      "Symbol": "OSWALPUMPS",
+      "Company Name": "Oswal Pumps Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE0BYP01024"
+    },
+    "PNGJL": {
+      "Symbol": "PNGJL",
+      "Company Name": "P N Gadgil Jewellers Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE953R01016"
+    },
+    "PCJEWELLER": {
+      "Symbol": "PCJEWELLER",
+      "Company Name": "PC Jeweller Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE785M01021"
+    },
+    "PDSL": {
+      "Symbol": "PDSL",
+      "Company Name": "PDS Ltd.",
+      "Industry": "Textiles",
+      "Series": "EQ",
+      "ISIN Code": "INE111Q01021"
+    },
+    "PNCINFRA": {
+      "Symbol": "PNCINFRA",
+      "Company Name": "PNC Infratech Ltd.",
+      "Industry": "Construction",
+      "Series": "EQ",
+      "ISIN Code": "INE195J01029"
+    },
+    "PTC": {
+      "Symbol": "PTC",
+      "Company Name": "PTC India Ltd.",
+      "Industry": "Power",
+      "Series": "EQ",
+      "ISIN Code": "INE877F01012"
+    },
+    "PAISALO": {
+      "Symbol": "PAISALO",
+      "Company Name": "Paisalo Digital Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE420C01059"
+    },
+    "PARAS": {
+      "Symbol": "PARAS",
+      "Company Name": "Paras Defence and Space Technologies Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE045601023"
+    },
+    "PARKHOSPS": {
+      "Symbol": "PARKHOSPS",
+      "Company Name": "Park Medi World Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE119201023"
+    },
+    "PGIL": {
+      "Symbol": "PGIL",
+      "Company Name": "Pearl Global Industries Ltd.",
+      "Industry": "Textiles",
+      "Series": "EQ",
+      "ISIN Code": "INE940H01022"
+    },
+    "PFIZER": {
+      "Symbol": "PFIZER",
+      "Company Name": "Pfizer Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE182A01018"
+    },
+    "PICCADIL": {
+      "Symbol": "PICCADIL",
+      "Company Name": "Piccadily Agro Industries Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE546C01010"
+    },
+    "POWERMECH": {
+      "Symbol": "POWERMECH",
+      "Company Name": "Power Mech Projects Ltd.",
+      "Industry": "Construction",
+      "Series": "EQ",
+      "ISIN Code": "INE211R01019"
+    },
+    "POWERICA": {
+      "Symbol": "POWERICA",
+      "Company Name": "Powerica Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE921L01032"
+    },
+    "PRAJIND": {
+      "Symbol": "PRAJIND",
+      "Company Name": "Praj Industries Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE074A01025"
+    },
+    "PRECWIRE": {
+      "Symbol": "PRECWIRE",
+      "Company Name": "Precision Wires India Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE372C01037"
+    },
+    "PRICOLLTD": {
+      "Symbol": "PRICOLLTD",
+      "Company Name": "Pricol Ltd.",
+      "Industry": "Automobile and Auto Components",
+      "Series": "EQ",
+      "ISIN Code": "INE726V01018"
+    },
+    "PGHL": {
+      "Symbol": "PGHL",
+      "Company Name": "Procter & Gamble Health Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE199A01012"
+    },
+    "PURVA": {
+      "Symbol": "PURVA",
+      "Company Name": "Puravankara Ltd.",
+      "Industry": "Realty",
+      "Series": "EQ",
+      "ISIN Code": "INE323I01011"
+    },
+    "QPOWER": {
+      "Symbol": "QPOWER",
+      "Company Name": "QUALITY POWER ELECTRICAL EQUIPMENTS Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE0SII01026"
+    },
+    "QUESS": {
+      "Symbol": "QUESS",
+      "Company Name": "Quess Corp Ltd.",
+      "Industry": "Services",
+      "Series": "EQ",
+      "ISIN Code": "INE615P01015"
+    },
+    "RAIN": {
+      "Symbol": "RAIN",
+      "Company Name": "Rain Industries Ltd",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE855B01025"
+    },
+    "RALLIS": {
+      "Symbol": "RALLIS",
+      "Company Name": "Rallis India Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE613A01020"
+    },
+    "RCF": {
+      "Symbol": "RCF",
+      "Company Name": "Rashtriya Chemicals & Fertilizers Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE027A01015"
+    },
+    "RATEGAIN": {
+      "Symbol": "RATEGAIN",
+      "Company Name": "Rategain Travel Technologies Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE0CLI01024"
+    },
+    "RATNAMANI": {
+      "Symbol": "RATNAMANI",
+      "Company Name": "Ratnamani Metals & Tubes Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE703B01027"
+    },
+    "RTNPOWER": {
+      "Symbol": "RTNPOWER",
+      "Company Name": "RattanIndia Power Ltd.",
+      "Industry": "Power",
+      "Series": "EQ",
+      "ISIN Code": "INE399K01017"
+    },
+    "RAYMONDLSL": {
+      "Symbol": "RAYMONDLSL",
+      "Company Name": "Raymond Lifestyle Ltd.",
+      "Industry": "Textiles",
+      "Series": "EQ",
+      "ISIN Code": "INE02ID01020"
+    },
+    "REFEX": {
+      "Symbol": "REFEX",
+      "Company Name": "Refex Industries Ltd.",
+      "Industry": "Utilities",
+      "Series": "EQ",
+      "ISIN Code": "INE056I01025"
+    },
+    "RELAXO": {
+      "Symbol": "RELAXO",
+      "Company Name": "Relaxo Footwears Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE131B01039"
+    },
+    "RELIGARE": {
+      "Symbol": "RELIGARE",
+      "Company Name": "Religare Enterprises Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE621H01010"
+    },
+    "RESPONIND": {
+      "Symbol": "RESPONIND",
+      "Company Name": "Responsive Industries Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE688D01026"
+    },
+    "RBA": {
+      "Symbol": "RBA",
+      "Company Name": "Restaurant Brands Asia Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE07T201019"
+    },
+    "ROUTE": {
+      "Symbol": "ROUTE",
+      "Company Name": "Route Mobile Ltd.",
+      "Industry": "Telecommunication",
+      "Series": "EQ",
+      "ISIN Code": "INE450U01017"
+    },
+    "SJS": {
+      "Symbol": "SJS",
+      "Company Name": "S.J.S. Enterprises Ltd.",
+      "Industry": "Automobile and Auto Components",
+      "Series": "EQ",
+      "ISIN Code": "INE284S01014"
+    },
+    "SBFC": {
+      "Symbol": "SBFC",
+      "Company Name": "SBFC Finance Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE423Y01016"
+    },
+    "SEDEMAC": {
+      "Symbol": "SEDEMAC",
+      "Company Name": "SEDEMAC Mechatronics Ltd.",
+      "Industry": "Automobile and Auto Components",
+      "Series": "EQ",
+      "ISIN Code": "INE00XB01019"
+    },
+    "SGMART": {
+      "Symbol": "SGMART",
+      "Company Name": "SG Mart Ltd.",
+      "Industry": "Metals & Mining",
+      "Series": "EQ",
+      "ISIN Code": "INE385F01024"
+    },
+    "SIGMAADV": {
+      "Symbol": "SIGMAADV",
+      "Company Name": "SIGMA ADVANCED SYSTEMS LTD.",
+      "Industry": "Capital Goods",
+      "Series": "BE",
+      "ISIN Code": "INE933B01012"
+    },
+    "SKYGOLD": {
+      "Symbol": "SKYGOLD",
+      "Company Name": "SKY GOLD AND DIAMONDS Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE01IU01018"
+    },
+    "SMLMAH": {
+      "Symbol": "SMLMAH",
+      "Company Name": "SML Mahindra Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE294B01019"
+    },
+    "LOTUSDEV": {
+      "Symbol": "LOTUSDEV",
+      "Company Name": "SRI LOTUS DEVELOPERS AND REALTY Ltd.",
+      "Industry": "Realty",
+      "Series": "BE",
+      "ISIN Code": "INE0V9Q01010"
+    },
+    "SAFARI": {
+      "Symbol": "SAFARI",
+      "Company Name": "Safari Industries (India) Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE429E01023"
+    },
+    "SAMHI": {
+      "Symbol": "SAMHI",
+      "Company Name": "Samhi Hotels Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE08U801020"
+    },
+    "SANDUMA": {
+      "Symbol": "SANDUMA",
+      "Company Name": "Sandur Manganese & Iron Ores Ltd.",
+      "Industry": "Metals & Mining",
+      "Series": "EQ",
+      "ISIN Code": "INE149K01016"
+    },
+    "SAPPHIRE": {
+      "Symbol": "SAPPHIRE",
+      "Company Name": "Sapphire Foods India Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE806T01020"
+    },
+    "SENCO": {
+      "Symbol": "SENCO",
+      "Company Name": "Senco Gold Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE602W01027"
+    },
+    "SENORES": {
+      "Symbol": "SENORES",
+      "Company Name": "Senores Pharmaceuticals Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE0RB801010"
+    },
+    "SHADOWFAX": {
+      "Symbol": "SHADOWFAX",
+      "Company Name": "Shadowfax Technologies Ltd.",
+      "Industry": "Services",
+      "Series": "EQ",
+      "ISIN Code": "INE12UN01015"
+    },
+    "SHAILY": {
+      "Symbol": "SHAILY",
+      "Company Name": "Shaily Engineering Plastics Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE151G01028"
+    },
+    "SHAKTIPUMP": {
+      "Symbol": "SHAKTIPUMP",
+      "Company Name": "Shakti Pumps (India) Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE908D01010"
+    },
+    "SHARDACROP": {
+      "Symbol": "SHARDACROP",
+      "Company Name": "Sharda Cropchem Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE221J01015"
+    },
+    "SHAREINDIA": {
+      "Symbol": "SHAREINDIA",
+      "Company Name": "Share India Securities Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE932X01026"
+    },
+    "SFL": {
+      "Symbol": "SFL",
+      "Company Name": "Sheela Foam Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE916U01025"
+    },
+    "SHILCTECH": {
+      "Symbol": "SHILCTECH",
+      "Company Name": "Shilchar Technologies Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE024F01011"
+    },
+    "SHILPAMED": {
+      "Symbol": "SHILPAMED",
+      "Company Name": "Shilpa Medicare Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE790G01031"
+    },
+    "RENUKA": {
+      "Symbol": "RENUKA",
+      "Company Name": "Shree Renuka Sugars Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE087H01022"
+    },
+    "SHREEJISPG": {
+      "Symbol": "SHREEJISPG",
+      "Company Name": "Shreeji Shipping Global Ltd.",
+      "Industry": "Services",
+      "Series": "EQ",
+      "ISIN Code": "INE1B6101010"
+    },
+    "SKIPPER": {
+      "Symbol": "SKIPPER",
+      "Company Name": "Skipper Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE439E01022"
+    },
+    "SONATSOFTW": {
+      "Symbol": "SONATSOFTW",
+      "Company Name": "Sonata Software Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE269A01021"
+    },
+    "SOUTHBANK": {
+      "Symbol": "SOUTHBANK",
+      "Company Name": "South Indian Bank Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE683A01023"
+    },
+    "SWSOLAR": {
+      "Symbol": "SWSOLAR",
+      "Company Name": "Sterling and Wilson Renewable Energy Ltd.",
+      "Industry": "Construction",
+      "Series": "EQ",
+      "ISIN Code": "INE00M201021"
+    },
+    "STAR": {
+      "Symbol": "STAR",
+      "Company Name": "Strides Pharma Science Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE939A01011"
+    },
+    "STYLAMIND": {
+      "Symbol": "STYLAMIND",
+      "Company Name": "Stylam Industries Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE239C01020"
+    },
+    "SUBROS": {
+      "Symbol": "SUBROS",
+      "Company Name": "Subros Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE287B01021"
+    },
+    "SUDARSCHEM": {
+      "Symbol": "SUDARSCHEM",
+      "Company Name": "Sudarshan Chemical Industries Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE659A01023"
+    },
+    "SUDEEPPHRM": {
+      "Symbol": "SUDEEPPHRM",
+      "Company Name": "Sudeep Pharma Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE0QPI01025"
+    },
+    "SPARC": {
+      "Symbol": "SPARC",
+      "Company Name": "Sun Pharma Advanced Research Company Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE232I01014"
+    },
+    "SUNDRMFAST": {
+      "Symbol": "SUNDRMFAST",
+      "Company Name": "Sundram Fasteners Ltd.",
+      "Industry": "Automobile and Auto Components",
+      "Series": "EQ",
+      "ISIN Code": "INE387A01021"
+    },
+    "SUNFLAG": {
+      "Symbol": "SUNFLAG",
+      "Company Name": "Sunflag Iron & Steel Company Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE947A01014"
+    },
+    "SUNTECK": {
+      "Symbol": "SUNTECK",
+      "Company Name": "Sunteck Realty Ltd.",
+      "Industry": "Realty",
+      "Series": "EQ",
+      "ISIN Code": "INE805D01034"
+    },
+    "SPLPETRO": {
+      "Symbol": "SPLPETRO",
+      "Company Name": "Supreme Petrochem Ltd.",
+      "Industry": "Chemicals",
+      "Series": "EQ",
+      "ISIN Code": "INE663A01033"
+    },
+    "SUPRIYA": {
+      "Symbol": "SUPRIYA",
+      "Company Name": "Supriya Lifescience Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE07RO01027"
+    },
+    "SURYAROSNI": {
+      "Symbol": "SURYAROSNI",
+      "Company Name": "Surya Roshni Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE335A01020"
+    },
+    "SUVEN": {
+      "Symbol": "SUVEN",
+      "Company Name": "Suven Life Sciences Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE495B01038"
+    },
+    "TARC": {
+      "Symbol": "TARC",
+      "Company Name": "TARC Ltd.",
+      "Industry": "Realty",
+      "Series": "EQ",
+      "ISIN Code": "INE0EK901012"
+    },
+    "TTKPRESTIG": {
+      "Symbol": "TTKPRESTIG",
+      "Company Name": "TTK Prestige Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE690A01028"
+    },
+    "TVSSCS": {
+      "Symbol": "TVSSCS",
+      "Company Name": "TVS Supply Chain Solutions Ltd.",
+      "Industry": "Services",
+      "Series": "EQ",
+      "ISIN Code": "INE395N01027"
+    },
+    "TMB": {
+      "Symbol": "TMB",
+      "Company Name": "Tamilnad Mercantile Bank Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE668A01016"
+    },
+    "TANLA": {
+      "Symbol": "TANLA",
+      "Company Name": "Tanla Platforms Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE483C01032"
+    },
+    "TEXRAIL": {
+      "Symbol": "TEXRAIL",
+      "Company Name": "Texmaco Rail & Eng. Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE621L01012"
+    },
+    "THOMASCOOK": {
+      "Symbol": "THOMASCOOK",
+      "Company Name": "Thomas Cook (India) Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE332A01027"
+    },
+    "THYROCARE": {
+      "Symbol": "THYROCARE",
+      "Company Name": "Thyrocare Technologies Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE594H01019"
+    },
+    "TI": {
+      "Symbol": "TI",
+      "Company Name": "Tilaknagar Industries Ltd.",
+      "Industry": "Fast Moving Consumer Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE133E01013"
+    },
+    "TIMETECHNO": {
+      "Symbol": "TIMETECHNO",
+      "Company Name": "Time Technoplast Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE508G01029"
+    },
+    "TIMEX": {
+      "Symbol": "TIMEX",
+      "Company Name": "Timex Group India Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE064A01026"
+    },
+    "TRANSRAILL": {
+      "Symbol": "TRANSRAILL",
+      "Company Name": "Transrail Lighting Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE454P01035"
+    },
+    "TRIVENIPT": {
+      "Symbol": "TRIVENIPT",
+      "Company Name": "Triveni Power Transmission Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "BE",
+      "ISIN Code": "INE2WKE01011"
+    },
+    "UJJIVANSFB": {
+      "Symbol": "UJJIVANSFB",
+      "Company Name": "Ujjivan Small Finance Bank Ltd.",
+      "Industry": "Financial Services",
+      "Series": "EQ",
+      "ISIN Code": "INE551W01018"
+    },
+    "UNIMECH": {
+      "Symbol": "UNIMECH",
+      "Company Name": "Unimech Aerospace and Manufacturing Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE0U3I01011"
+    },
+    "VGUARD": {
+      "Symbol": "VGUARD",
+      "Company Name": "V-Guard Industries Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE951I01027"
+    },
+    "VMART": {
+      "Symbol": "VMART",
+      "Company Name": "V-Mart Retail Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE665J01013"
+    },
+    "VIPIND": {
+      "Symbol": "VIPIND",
+      "Company Name": "V.I.P. Industries Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE054A01027"
+    },
+    "V2RETAIL": {
+      "Symbol": "V2RETAIL",
+      "Company Name": "V2 Retail Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE945H01021"
+    },
+    "DBREALTY": {
+      "Symbol": "DBREALTY",
+      "Company Name": "VALOR ESTATE Ltd.",
+      "Industry": "Realty",
+      "Series": "EQ",
+      "ISIN Code": "INE879I01012"
+    },
+    "WABAG": {
+      "Symbol": "WABAG",
+      "Company Name": "Va Tech Wabag Ltd.",
+      "Industry": "Utilities",
+      "Series": "EQ",
+      "ISIN Code": "INE956G01038"
+    },
+    "VAIBHAVGBL": {
+      "Symbol": "VAIBHAVGBL",
+      "Company Name": "Vaibhav Global Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE884A01027"
+    },
+    "MANYAVAR": {
+      "Symbol": "MANYAVAR",
+      "Company Name": "Vedant Fashions Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE825V01034"
+    },
+    "VESUVIUS": {
+      "Symbol": "VESUVIUS",
+      "Company Name": "Vesuvius India Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE386A01023"
+    },
+    "VIKRAMSOLR": {
+      "Symbol": "VIKRAMSOLR",
+      "Company Name": "Vikram Solar Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE078V01014"
+    },
+    "VIYASH": {
+      "Symbol": "VIYASH",
+      "Company Name": "Viyash Scientific Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE807F01027"
+    },
+    "VOLTAMP": {
+      "Symbol": "VOLTAMP",
+      "Company Name": "Voltamp Transformers Ltd",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE540H01012"
+    },
+    "WAAREERTL": {
+      "Symbol": "WAAREERTL",
+      "Company Name": "Waaree Renewable Technologies Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE299N01021"
+    },
+    "WAKEFIT": {
+      "Symbol": "WAKEFIT",
+      "Company Name": "Wakefit Innovations Ltd.",
+      "Industry": "Consumer Durables",
+      "Series": "EQ",
+      "ISIN Code": "INE0E7301029"
+    },
+    "WEWORK": {
+      "Symbol": "WEWORK",
+      "Company Name": "WeWork India Management Ltd.",
+      "Industry": "Services",
+      "Series": "EQ",
+      "ISIN Code": "INE085001019"
+    },
+    "WEBELSOLAR": {
+      "Symbol": "WEBELSOLAR",
+      "Company Name": "Websol Energy System Ltd.",
+      "Industry": "Capital Goods",
+      "Series": "EQ",
+      "ISIN Code": "INE855C01023"
+    },
+    "WELENT": {
+      "Symbol": "WELENT",
+      "Company Name": "Welspun Enterprises Ltd.",
+      "Industry": "Construction",
+      "Series": "EQ",
+      "ISIN Code": "INE625G01013"
+    },
+    "WESTLIFE": {
+      "Symbol": "WESTLIFE",
+      "Company Name": "Westlife Foodworld Ltd.",
+      "Industry": "Consumer Services",
+      "Series": "EQ",
+      "ISIN Code": "INE274F01020"
+    },
+    "YATHARTH": {
+      "Symbol": "YATHARTH",
+      "Company Name": "Yatharth Hospital & Trauma Care Services Ltd.",
+      "Industry": "Healthcare",
+      "Series": "EQ",
+      "ISIN Code": "INE0JO301016"
+    },
+    "ZAGGLE": {
+      "Symbol": "ZAGGLE",
+      "Company Name": "Zaggle Prepaid Ocean Services Ltd.",
+      "Industry": "Information Technology",
+      "Series": "EQ",
+      "ISIN Code": "INE07K301024"
     }
   }
 }
