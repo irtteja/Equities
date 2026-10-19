@@ -94,41 +94,61 @@ def fetch_constituents(filename: str, retries: int = 4) -> list[dict]:
     raise last_exc
 
 
+def save(out_file: str, data: dict) -> None:
+    tmp = out_file + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(data, f, indent=2)
+    import os
+    os.replace(tmp, out_file)
+
+
 def main() -> None:
     out_file = "nse_data.json"
 
-    print("Connecting to NSE India...")
-    session = nse_session()
+    # Resume from existing checkpoint if present
+    try:
+        with open(out_file) as f:
+            data = json.load(f)
+        constituents: dict[str, list[dict]] = data.get("constituents", {})
+        indices: list[dict] = data.get("indices", [])
+        print(f"Resuming from checkpoint: {len(constituents)}/{len(CONSTITUENT_CSV)} constituent lists already fetched")
+    except FileNotFoundError:
+        constituents = {}
+        indices = []
 
-    print("Fetching indices...")
-    indices = fetch_indices(session)
-    print(f"  {len(indices)} indices fetched")
+    if not indices:
+        print("Connecting to NSE India...")
+        session = nse_session()
+        print("Fetching indices...")
+        indices = fetch_indices(session)
+        print(f"  {len(indices)} indices fetched")
+        data = {
+            "fetched_at": datetime.now().isoformat(),
+            "indices": indices,
+            "constituents": constituents,
+        }
+        save(out_file, data)
 
-    # Build index lookup by symbol for quick access
-    index_map = {idx["indexSymbol"]: idx for idx in indices}
+    pending = [(name, fn) for name, fn in CONSTITUENT_CSV.items() if name not in constituents]
+    print(f"Fetching {len(pending)} remaining constituent lists...")
+    failed = []
 
-    print("Fetching constituents...")
-    constituents: dict[str, list[dict]] = {}
-    for index_name, filename in CONSTITUENT_CSV.items():
+    for index_name, filename in pending:
         try:
             stocks = fetch_constituents(filename)
             constituents[index_name] = stocks
+            data["constituents"] = constituents
+            save(out_file, data)  # checkpoint after every successful fetch
             print(f"  {index_name}: {len(stocks)} stocks")
         except Exception as e:
+            failed.append(index_name)
             print(f"  {index_name}: FAILED — {e}", file=sys.stderr)
-
-    data = {
-        "fetched_at": datetime.now().isoformat(),
-        "indices": indices,
-        "constituents": constituents,
-    }
-
-    with open(out_file, "w") as f:
-        json.dump(data, f, indent=2)
 
     total_stocks = sum(len(v) for v in constituents.values())
     print(f"\nSaved to {out_file}")
     print(f"  {len(indices)} indices, {len(constituents)} constituent lists, {total_stocks} stock records")
+    if failed:
+        print(f"  {len(failed)} failed (re-run to retry): {', '.join(failed)}", file=sys.stderr)
 
 
 if __name__ == "__main__":
