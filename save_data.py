@@ -4,6 +4,7 @@ import csv
 import io
 import json
 import sys
+import time
 from datetime import datetime
 import requests
 
@@ -71,15 +72,26 @@ def fetch_indices(session: requests.Session) -> list[dict]:
     return resp.json()["data"]
 
 
-def fetch_constituents(filename: str) -> list[dict]:
+def fetch_constituents(filename: str, retries: int = 4) -> list[dict]:
     url = f"https://nsearchives.nseindia.com/content/indices/{filename}"
-    resp = requests.get(
-        url,
-        headers={"User-Agent": NSE_HEADERS["User-Agent"]},
-        timeout=15,
-    )
-    resp.raise_for_status()
-    return list(csv.DictReader(io.StringIO(resp.text)))
+    delay = 2
+    last_exc: Exception = RuntimeError("no attempts made")
+    for attempt in range(retries):
+        try:
+            resp = requests.get(
+                url,
+                headers={"User-Agent": NSE_HEADERS["User-Agent"]},
+                timeout=15 + attempt * 15,  # 15s, 30s, 45s, 60s
+            )
+            resp.raise_for_status()
+            return list(csv.DictReader(io.StringIO(resp.text)))
+        except Exception as e:
+            last_exc = e
+            if attempt < retries - 1:
+                print(f"    retry {attempt + 1}/{retries - 1} after {delay}s — {e}", file=sys.stderr)
+                time.sleep(delay)
+                delay *= 2
+    raise last_exc
 
 
 def main() -> None:

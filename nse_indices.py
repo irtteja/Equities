@@ -159,11 +159,14 @@ def fetch_index_constituents(index: str) -> list[dict] | dict:
 
 
 def run_tool(name: str, tool_input: dict) -> str:
-    if name == "fetch_nse_indices":
-        return json.dumps(fetch_nse_indices(tool_input.get("category")))
-    if name == "fetch_index_constituents":
-        return json.dumps(fetch_index_constituents(tool_input["index"]))
-    return json.dumps({"error": f"Unknown tool: {name}"})
+    try:
+        if name == "fetch_nse_indices":
+            return json.dumps(fetch_nse_indices(tool_input.get("category")))
+        if name == "fetch_index_constituents":
+            return json.dumps(fetch_index_constituents(tool_input["index"]))
+        return json.dumps({"error": f"Unknown tool: {name}"})
+    except Exception as e:
+        return json.dumps({"error": str(e), "tool": name, "input": tool_input})
 
 
 # ── agent loop ─────────────────────────────────────────────────────────────
