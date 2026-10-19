@@ -115,19 +115,26 @@ def export_csv(data: dict) -> None:
         writer.writeheader()
         writer.writerows(data["indices"])
 
-    # constituents.csv — flattened with index column
-    rows = [
-        {"index": index_name, **stock}
-        for index_name, stocks in data["constituents"].items()
-        for stock in stocks
-    ]
-    with open("constituents.csv", "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=rows[0].keys())
+    # stocks.csv — one row per unique stock
+    stocks = data.get("stocks", {})
+    with open("stocks.csv", "w", newline="") as f:
+        fieldnames = ["Symbol", "Company Name", "Industry", "Series", "ISIN Code"]
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(rows)
+        writer.writerows(stocks.values())
 
+    # index_membership.csv — index → symbol mapping
+    with open("index_membership.csv", "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["index", "Symbol"])
+        writer.writeheader()
+        for index_name, symbols in data["constituents"].items():
+            for sym in symbols:
+                writer.writerow({"index": index_name, "Symbol": sym})
+
+    total_memberships = sum(len(v) for v in data["constituents"].values())
     print(f"  indices.csv: {len(data['indices'])} rows")
-    print(f"  constituents.csv: {len(rows)} rows")
+    print(f"  stocks.csv: {len(stocks)} unique stocks")
+    print(f"  index_membership.csv: {total_memberships} rows")
 
 
 def main() -> None:
@@ -137,11 +144,10 @@ def main() -> None:
     try:
         with open(out_file) as f:
             data = json.load(f)
-        constituents: dict[str, list[dict]] = data.get("constituents", {})
+        constituents: dict[str, list] = data.get("constituents", {})
         indices: list[dict] = data.get("indices", [])
-        # pending: indices not yet successfully fetched
         pending: list[str] = data.get("pending", list(CONSTITUENT_CSV.keys()))
-        pending = [p for p in pending if p not in constituents]  # drop already done
+        pending = [p for p in pending if p not in constituents]
         print(f"Resuming: {len(constituents)} done, {len(pending)} pending")
     except FileNotFoundError:
         constituents = {}
@@ -165,16 +171,32 @@ def main() -> None:
 
     print(f"Fetching {len(pending)} constituent lists...")
 
+    stocks_master: dict[str, dict] = data.get("stocks", {})
+
     for index_name in list(pending):
         filename = CONSTITUENT_CSV[index_name]
         try:
-            stocks = fetch_constituents(filename)
-            constituents[index_name] = stocks
+            rows = fetch_constituents(filename)
+            # store unique stocks in master dict, constituents as symbol list
+            symbols = []
+            for row in rows:
+                sym = row.get("Symbol", "").strip()
+                if sym:
+                    stocks_master[sym] = {
+                        "Symbol": sym,
+                        "Company Name": row.get("Company Name", "").strip(),
+                        "Industry": row.get("Industry", "").strip(),
+                        "Series": row.get("Series", "").strip(),
+                        "ISIN Code": row.get("ISIN Code", "").strip(),
+                    }
+                    symbols.append(sym)
+            constituents[index_name] = symbols
             pending.remove(index_name)
+            data["stocks"] = stocks_master
             data["constituents"] = constituents
             data["pending"] = pending
             save(out_file, data)  # checkpoint: persist success + updated pending
-            print(f"  {index_name}: {len(stocks)} stocks")
+            print(f"  {index_name}: {len(symbols)} stocks")
         except Exception as e:
             print(f"  {index_name}: FAILED — {e}", file=sys.stderr)
 
