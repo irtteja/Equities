@@ -248,26 +248,28 @@ def export_csv(data: dict) -> None:
         writer.writeheader()
         writer.writerows(data["indices"])
 
-    # stocks.csv — one row per unique stock
+    # Build reverse map: symbol → sorted list of indices
+    symbol_to_indices: dict[str, list[str]] = {}
+    for index_name, symbols in data["constituents"].items():
+        for sym in symbols:
+            symbol_to_indices.setdefault(sym, []).append(index_name)
+    for sym in symbol_to_indices:
+        symbol_to_indices[sym].sort()
+
+    # stocks.csv — one row per stock with all details + indices membership
     stocks = data.get("stocks", {})
     with open("stocks.csv", "w", newline="") as f:
-        fieldnames = ["Symbol", "Company Name", "Industry", "Series", "ISIN Code"]
+        fieldnames = ["Symbol", "Company Name", "Industry", "Series", "ISIN Code", "Indices"]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(stocks.values())
+        for sym, info in stocks.items():
+            writer.writerow({
+                **info,
+                "Indices": " | ".join(symbol_to_indices.get(sym, [])),
+            })
 
-    # index_membership.csv — index → symbol mapping
-    with open("index_membership.csv", "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["index", "Symbol"])
-        writer.writeheader()
-        for index_name, symbols in data["constituents"].items():
-            for sym in symbols:
-                writer.writerow({"index": index_name, "Symbol": sym})
-
-    total_memberships = sum(len(v) for v in data["constituents"].values())
     print(f"  indices.csv: {len(data['indices'])} rows")
-    print(f"  stocks.csv: {len(stocks)} unique stocks")
-    print(f"  index_membership.csv: {total_memberships} rows")
+    print(f"  stocks.csv: {len(stocks)} stocks with index membership")
 
 
 def _build_constituent_map(indices: list[dict], session: requests.Session) -> dict[str, str]:
