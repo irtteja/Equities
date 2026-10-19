@@ -66,10 +66,16 @@ def nse_session() -> requests.Session:
     return s
 
 
+EXCLUDED_CATEGORIES = {"STRATEGY INDICES", "FIXED INCOME INDICES"}
+
+
 def fetch_indices(session: requests.Session) -> list[dict]:
     resp = session.get("https://www.nseindia.com/api/allIndices", timeout=15)
     resp.raise_for_status()
-    return resp.json()["data"]
+    return [
+        d for d in resp.json()["data"]
+        if d.get("key", "").upper() not in EXCLUDED_CATEGORIES
+    ]
 
 
 def fetch_constituents(filename: str, retries: int = 4) -> list[dict]:

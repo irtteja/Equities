@@ -63,8 +63,7 @@ TOOLS = [
             "Returns all indices with last price, change, % change, open, high, low, "
             "previous close, 52-week high/low, P/E, P/B, dividend yield, "
             "advances/declines. Categories: BROAD MARKET INDICES, "
-            "INDICES ELIGIBLE IN DERIVATIVES, SECTORAL INDICES, "
-            "THEMATIC INDICES, STRATEGY INDICES, FIXED INCOME INDICES."
+            "INDICES ELIGIBLE IN DERIVATIVES, SECTORAL INDICES, THEMATIC INDICES."
         ),
         "input_schema": {
             "type": "object",
@@ -74,8 +73,7 @@ TOOLS = [
                     "description": (
                         "Optional filter. One of: 'BROAD MARKET INDICES', "
                         "'INDICES ELIGIBLE IN DERIVATIVES', 'SECTORAL INDICES', "
-                        "'THEMATIC INDICES', 'STRATEGY INDICES', "
-                        "'FIXED INCOME INDICES'. Omit to fetch all."
+                        "'THEMATIC INDICES'. Omit to fetch all."
                     ),
                 }
             },
@@ -121,11 +119,15 @@ def _nse_session() -> requests.Session:
     return s
 
 
+EXCLUDED_CATEGORIES = {"STRATEGY INDICES", "FIXED INCOME INDICES"}
+
+
 def fetch_nse_indices(category: str | None = None) -> list[dict]:
     session = _nse_session()
     resp = session.get("https://www.nseindia.com/api/allIndices", timeout=15)
     resp.raise_for_status()
     data = resp.json()["data"]
+    data = [d for d in data if d.get("key", "").upper() not in EXCLUDED_CATEGORIES]
     if category:
         data = [d for d in data if d.get("key", "").upper() == category.upper()]
     fields = [
