@@ -16,6 +16,10 @@ IST = timezone(timedelta(hours=5, minutes=30))
 def _now_ist() -> str:
     return datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S IST")
 
+# ── NSE domain constants (can be overridden by checkpoint if domains change) ──
+DEFAULT_NSE_MAIN    = "https://www.nseindia.com"
+DEFAULT_NSE_ARCHIVE = "https://nsearchives.nseindia.com"
+
 NSE_HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -23,7 +27,7 @@ NSE_HEADERS = {
     ),
     "Accept": "application/json, text/plain, */*",
     "Accept-Language": "en-US,en;q=0.9",
-    "Referer": "https://www.nseindia.com/",
+    "Referer": f"{DEFAULT_NSE_MAIN}/",
     "X-Requested-With": "XMLHttpRequest",
 }
 
@@ -82,21 +86,9 @@ CONSTITUENT_CSV = {
 }
 
 
-def nse_session() -> requests.Session:
-    s = requests.Session()
-    s.headers.update({
-        "User-Agent": NSE_HEADERS["User-Agent"],
-        "Accept": "text/html,application/xhtml+xml",
-        "Accept-Language": "en-US,en;q=0.9",
-    })
-    s.get("https://www.nseindia.com/", timeout=15)
-    s.headers.update(NSE_HEADERS)
-    return s
 
 
 EXCLUDED_CATEGORIES = {"STRATEGY INDICES", "FIXED INCOME INDICES"}
-
-_ARCHIVE_BASE = "https://nsearchives.nseindia.com/content/indices/"
 
 _DISCOVERY_TOOLS = [
     {
@@ -151,17 +143,74 @@ def _anthropic_client() -> anthropic.Anthropic:
     return anthropic.Anthropic()
 
 
-def discover_csvs_with_agent(unknown_indices: list[str]) -> dict[str, str]:
+def discover_domains_with_agent() -> dict[str, str]:
+    """Ask a Claude agent to find the current NSE main and archive domains."""
+    client = _anthropic_client()
+    messages = [{"role": "user", "content": (
+        "The NSE India website domains may have changed. Find the current working domains for:\n"
+        "1. The main NSE site that serves live index data via an '/api/allIndices' endpoint\n"
+        "2. The NSE archives site that serves constituent CSV files under '/content/indices/'\n\n"
+        "Known historical domains to try first:\n"
+        "  - Main: https://www.nseindia.com\n"
+        "  - Archive: https://nsearchives.nseindia.com\n\n"
+        "Use check_url to probe these and any alternatives you know. "
+        "Reply with ONLY a JSON object: {\"main\": \"https://...\", \"archive\": \"https://...\"} "
+        "— only include domains that actually responded. No prose."
+    )}]
+
+    while True:
+        response = client.messages.create(
+            model="claude-opus-5-5",
+            max_tokens=1024,
+            system=(
+                "You are a domain-discovery agent. Find working NSE India API domains. "
+                "Respond with valid JSON only — no prose, no markdown."
+            ),
+            tools=_DISCOVERY_TOOLS,
+            messages=messages,
+        )
+
+        text_parts = [b.text for b in response.content if b.type == "text"]
+
+        if response.stop_reason == "end_turn":
+            raw = "\n".join(text_parts)
+            start, end = raw.find("{"), raw.rfind("}")
+            if start != -1 and end > start:
+                try:
+                    result = json.loads(raw[start : end + 1])
+                    if "main" in result or "archive" in result:
+                        return result
+                except json.JSONDecodeError:
+                    pass
+            return {}
+
+        if response.stop_reason != "tool_use":
+            return {}
+
+        messages.append({"role": "assistant", "content": response.content})
+        tool_results = []
+        for block in response.content:
+            if block.type == "tool_use":
+                tool_results.append({
+                    "type": "tool_result",
+                    "tool_use_id": block.id,
+                    "content": _run_discovery_tool(block.name, block.input),
+                })
+        messages.append({"role": "user", "content": tool_results})
+
+
+def discover_csvs_with_agent(unknown_indices: list[str], nse_archive: str) -> dict[str, str]:
     """Ask a Claude agent to find constituent CSV filenames for unknown NSE indices."""
     if not unknown_indices:
         return {}
 
     client = _anthropic_client()
     index_list = "\n".join(f"- {n}" for n in unknown_indices)
+    archive_base = f"{nse_archive}/content/indices/"
     messages = [{"role": "user", "content": (
-        f"Find constituent CSV filenames on https://nsearchives.nseindia.com/content/indices/ "
+        f"Find constituent CSV filenames on {archive_base} "
         f"for these NSE indices:\n{index_list}\n\n"
-        f"1. First fetch https://nsearchives.nseindia.com/content/indices/ for a directory listing.\n"
+        f"1. First fetch {archive_base} for a directory listing.\n"
         f"2. Match each index name to a filename (all start with 'ind_', end in '.csv').\n"
         f"3. Use check_url to verify any uncertain matches.\n"
         f"4. Reply with ONLY a JSON object: {{\"INDEX NAME\": \"filename.csv\", ...}} "
@@ -173,8 +222,8 @@ def discover_csvs_with_agent(unknown_indices: list[str]) -> dict[str, str]:
             model="claude-opus-5-5",
             max_tokens=4096,
             system=(
-                "You are a data discovery agent. Find CSV filenames for NSE index constituent "
-                "lists at https://nsearchives.nseindia.com/content/indices/. "
+                f"You are a data discovery agent. Find CSV filenames for NSE index constituent "
+                f"lists at {archive_base}. "
                 "Files follow patterns like ind_nifty<name>_list.csv or ind_nifty<name>list.csv. "
                 "Respond with valid JSON only — no prose, no markdown."
             ),
@@ -209,8 +258,20 @@ def discover_csvs_with_agent(unknown_indices: list[str]) -> dict[str, str]:
         messages.append({"role": "user", "content": tool_results})
 
 
-def fetch_indices(session: requests.Session) -> list[dict]:
-    resp = session.get("https://www.nseindia.com/api/allIndices", timeout=15)
+def nse_session(nse_main: str) -> requests.Session:
+    s = requests.Session()
+    s.headers.update({
+        "User-Agent": NSE_HEADERS["User-Agent"],
+        "Accept": "text/html,application/xhtml+xml",
+        "Accept-Language": "en-US,en;q=0.9",
+    })
+    s.get(f"{nse_main}/", timeout=15)
+    s.headers.update({**NSE_HEADERS, "Referer": f"{nse_main}/"})
+    return s
+
+
+def fetch_indices(session: requests.Session, nse_main: str) -> list[dict]:
+    resp = session.get(f"{nse_main}/api/allIndices", timeout=15)
     resp.raise_for_status()
     return [
         d for d in resp.json()["data"]
@@ -222,8 +283,8 @@ class NotFoundError(Exception):
     pass
 
 
-def fetch_constituents(filename: str, retries: int = 4) -> list[dict]:
-    url = f"https://nsearchives.nseindia.com/content/indices/{filename}"
+def fetch_constituents(filename: str, nse_archive: str, retries: int = 4) -> list[dict]:
+    url = f"{nse_archive}/content/indices/{filename}"
     delay = 2
     last_exc: Exception = RuntimeError("no attempts made")
     for attempt in range(retries):
@@ -303,10 +364,10 @@ def export_csv(data: dict) -> None:
     print(f"  changes.csv: {len(changes)} change records")
 
 
-def _build_constituent_map(indices: list[dict], session: requests.Session) -> dict[str, str]:
+def _build_constituent_map(indices: list[dict], nse_archive: str) -> dict[str, str]:
     """
     Return {index_name: csv_filename} for all non-excluded indices.
-    Known mappings come from CONSTITUENT_CSV; unknown indices are probed via HEAD requests.
+    Known mappings come from CONSTITUENT_CSV; unknown indices are probed via agent.
     """
     result: dict[str, str] = {}
     unknown = []
@@ -319,7 +380,7 @@ def _build_constituent_map(indices: list[dict], session: requests.Session) -> di
 
     if unknown:
         print(f"  Agent discovering {len(unknown)} unknown indices...", file=sys.stderr)
-        discovered = discover_csvs_with_agent(unknown)
+        discovered = discover_csvs_with_agent(unknown, nse_archive)
         for name, filename in discovered.items():
             result[name] = filename
             print(f"    discovered: {name} → {filename}", file=sys.stderr)
@@ -331,10 +392,10 @@ def _build_constituent_map(indices: list[dict], session: requests.Session) -> di
     return result
 
 
-def _fetch_one(index_name: str, filename: str, old_symbols: list[str]):
+def _fetch_one(index_name: str, filename: str, old_symbols: list[str], nse_archive: str):
     """Fetch and parse one index CSV. Returns (index_name, new_symbols, stock_details, error)."""
     try:
-        rows = fetch_constituents(filename)
+        rows = fetch_constituents(filename, nse_archive)
         new_symbols: list[str] = []
         stock_details: dict[str, dict] = {}
         for row in rows:
@@ -364,20 +425,44 @@ def main() -> None:
         constituent_map: dict[str, str] = data.get("constituent_map", {})
         stocks_master: dict[str, dict]  = data.get("stocks", {})
         changes: list[dict]             = data.get("changes", [])
-        # refresh_pending: indices left to re-fetch in the current run
-        # if present, we're resuming a partial run; otherwise start fresh
         refresh_pending: list[str] | None = data.get("refresh_pending")
+        nse_main    = data.get("nse_main",    DEFAULT_NSE_MAIN)
+        nse_archive = data.get("nse_archive", DEFAULT_NSE_ARCHIVE)
         print(f"Loaded checkpoint: {len(constituents)} indices, {len(stocks_master)} stocks")
     except FileNotFoundError:
         constituents, constituent_map, stocks_master, changes = {}, {}, {}, []
         refresh_pending = None
+        nse_main, nse_archive = DEFAULT_NSE_MAIN, DEFAULT_NSE_ARCHIVE
         data = {}
 
-    print("Connecting to NSE India...")
-    session = nse_session()
+    # ── Connect to NSE — fall back to agent if domain unreachable ─────────────
+    print(f"Connecting to NSE India ({nse_main})...")
+    session = None
+    indices = None
+    for attempt_domains in range(2):
+        try:
+            session = nse_session(nse_main)
+            indices = fetch_indices(session, nse_main)
+            break
+        except Exception as e:
+            if attempt_domains == 0:
+                print(f"  Failed ({e}). Asking agent to find current NSE domains...",
+                      file=sys.stderr)
+                discovered = discover_domains_with_agent()
+                if discovered.get("main"):
+                    nse_main = discovered["main"]
+                    print(f"  Agent found main domain: {nse_main}")
+                if discovered.get("archive"):
+                    nse_archive = discovered["archive"]
+                    print(f"  Agent found archive domain: {nse_archive}")
+                if not discovered:
+                    print("  Agent could not find any working domain. Aborting.",
+                          file=sys.stderr)
+                    sys.exit(1)
+            else:
+                print(f"  Still unreachable after domain discovery: {e}", file=sys.stderr)
+                sys.exit(1)
 
-    print("Fetching indices...")
-    indices = fetch_indices(session)
     print(f"  {len(indices)} indices fetched")
 
     # Update constituent map — discover any brand-new indices (not yet in map at all)
@@ -385,7 +470,7 @@ def main() -> None:
     if new_index_names:
         print(f"  Building constituent map ({len(new_index_names)} new)...")
         constituent_map.update(_build_constituent_map(
-            [d for d in indices if d["index"] in new_index_names], session
+            [d for d in indices if d["index"] in new_index_names], nse_archive
         ))
 
     # Detect indices removed from NSE entirely
@@ -404,6 +489,8 @@ def main() -> None:
 
     data = {
         "fetched_at": _now_ist(),
+        "nse_main":    nse_main,
+        "nse_archive": nse_archive,
         "indices": indices,
         "constituent_map": constituent_map,
         "constituents": constituents,
@@ -418,7 +505,7 @@ def main() -> None:
 
     with ThreadPoolExecutor(max_workers=10) as pool:
         futures = {
-            pool.submit(_fetch_one, name, constituent_map[name], constituents.get(name, [])): name
+            pool.submit(_fetch_one, name, constituent_map[name], constituents.get(name, []), nse_archive): name
             for name in list(refresh_pending)
             if constituent_map.get(name)  # skip None sentinels
         }
